@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Canciones de Abel Rubio</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0e0e14;--surface:#17171f;--card:#1e1e2a;--border:rgba(255,255,255,0.07);--accent:#c4a35a;--accent2:#7eb8a4;--accent3:#a07cc5;--accent4:#e07a7a;--text:#e8e6e0;--muted:#7a7880;--player-bg:#13131a;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-size:14px;min-height:100vh;}
+
+header{text-align:center;padding:4rem 2rem 2rem;position:relative;overflow:hidden;}
+header::before{content:'';position:absolute;top:-100px;left:50%;transform:translateX(-50%);width:600px;height:600px;background:radial-gradient(ellipse,rgba(196,163,90,0.12) 0%,transparent 70%);pointer-events:none;}
+.eyebrow{font-size:0.65rem;letter-spacing:0.4em;color:var(--accent);text-transform:uppercase;margin-bottom:1rem;}
+header h1{font-family:'Playfair Display',serif;font-size:clamp(2.2rem,6vw,4rem);font-weight:400;letter-spacing:0.02em;margin-bottom:0.5rem;}
+header h1 em{font-style:italic;color:var(--accent);}
+.header-sub{font-size:0.8rem;color:var(--muted);letter-spacing:0.15em;}
+
+.historia-wrap{max-width:760px;margin:2.5rem auto;padding:0 1.5rem;}
+.historia-box{padding:2rem 2.5rem;background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--accent);position:relative;}
+.historia-box::before{content:'"';font-family:'Playfair Display',serif;font-size:5rem;color:var(--accent);opacity:0.2;position:absolute;top:-0.5rem;left:1rem;line-height:1;}
+.historia-box p{font-family:'Playfair Display',serif;font-style:italic;font-size:1rem;line-height:1.85;color:#c8c4ba;margin-bottom:0.75rem;}
+.historia-credits{margin-top:1.5rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:0.72rem;color:var(--muted);line-height:2;}
+.historia-credits strong{color:var(--text);}
+
+#player{position:sticky;top:0;z-index:200;background:var(--player-bg);border-bottom:1px solid var(--border);padding:0.75rem 1.5rem;display:flex;align-items:center;gap:1.5rem;backdrop-filter:blur(20px);transition:box-shadow 0.3s;}
+#player.active{box-shadow:0 4px 30px rgba(196,163,90,0.15);}
+.player-info{flex:1;min-width:0;}
+#player-title{font-family:'Playfair Display',serif;font-size:1rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+#player-title.no-song{color:var(--muted);font-style:italic;}
+#player-album{font-size:0.65rem;letter-spacing:0.15em;color:var(--muted);text-transform:uppercase;margin-top:0.2rem;display:none;}
+
+.player-controls{display:flex;align-items:center;gap:0.6rem;}
+.ctrl-btn{background:none;border:none;cursor:pointer;color:var(--muted);padding:0.4rem;border-radius:50%;transition:color 0.2s,background 0.2s;display:flex;align-items:center;justify-content:center;}
+.ctrl-btn:hover{color:var(--text);background:rgba(255,255,255,0.06);}
+.ctrl-btn.play-btn{width:42px;height:42px;background:var(--accent);color:#000;}
+.ctrl-btn.play-btn:hover{background:#d4b46a;}
+.ctrl-btn svg{width:18px;height:18px;fill:currentColor;}
+.ctrl-btn.play-btn svg{width:16px;height:16px;}
+
+.progress-wrap{flex:2;display:flex;align-items:center;gap:0.6rem;min-width:0;}
+.time-label{font-size:0.65rem;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap;}
+#progress-bar{flex:1;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;cursor:pointer;appearance:none;-webkit-appearance:none;}
+#progress-bar::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;background:var(--accent);border-radius:50%;cursor:pointer;}
+.vol-wrap{display:flex;align-items:center;gap:0.4rem;}
+#vol-bar{width:70px;height:3px;appearance:none;-webkit-appearance:none;background:rgba(255,255,255,0.15);border-radius:2px;cursor:pointer;}
+#vol-bar::-webkit-slider-thumb{-webkit-appearance:none;width:10px;height:10px;background:var(--muted);border-radius:50%;}
+
+.content{max-width:1000px;margin:0 auto;padding:2.5rem 1.5rem 6rem;}
+.filters{display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:2rem;}
+.filter-btn{background:var(--surface);border:1px solid var(--border);color:var(--muted);padding:0.4rem 1rem;border-radius:20px;font-size:0.72rem;letter-spacing:0.1em;cursor:pointer;transition:all 0.2s;font-family:'Inter',sans-serif;}
+.filter-btn:hover{color:var(--text);border-color:rgba(255,255,255,0.2);}
+.filter-btn.active{background:var(--accent);color:#000;border-color:var(--accent);font-weight:500;}
+
+.album-section{margin-bottom:2.5rem;}
+.album-header{display:flex;align-items:center;gap:1rem;margin-bottom:1rem;}
+.album-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.album-label{font-size:0.65rem;letter-spacing:0.4em;text-transform:uppercase;color:var(--muted);}
+.album-line{flex:1;height:1px;background:var(--border);}
+.album-count{font-size:0.6rem;color:var(--muted);}
+
+.song-list{display:flex;flex-direction:column;gap:2px;}
+.song-item{display:flex;align-items:center;gap:1rem;padding:0.7rem 1rem;background:var(--surface);border:1px solid transparent;border-radius:6px;cursor:pointer;transition:all 0.18s;position:relative;overflow:hidden;}
+.song-item::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:2px 0 0 2px;opacity:0;transition:opacity 0.2s;}
+.song-item:hover{background:var(--card);border-color:var(--border);}
+.song-item:hover::before{opacity:1;}
+.song-item.playing{background:var(--card);}
+.song-item.playing::before{opacity:1;}
+.song-num{width:28px;text-align:right;font-size:0.65rem;color:var(--muted);flex-shrink:0;font-variant-numeric:tabular-nums;}
+.play-icon-wrap{width:20px;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.play-icon-wrap svg{width:14px;height:14px;fill:var(--muted);opacity:0;transition:opacity 0.2s;}
+.song-item:hover .play-icon-wrap svg,.song-item.playing .play-icon-wrap svg{opacity:1;}
+.song-name{flex:1;font-size:0.9rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.playing-bars{display:none;gap:2px;align-items:flex-end;height:14px;flex-shrink:0;}
+.song-item.playing .playing-bars{display:flex;}
+.playing-bars span{width:3px;border-radius:2px;animation:bar 0.8s ease-in-out infinite;}
+.playing-bars span:nth-child(2){animation-delay:0.15s;}
+.playing-bars span:nth-child(3){animation-delay:0.3s;}
+@keyframes bar{0%,100%{height:3px}50%{height:13px}}
+
+/* album colours */
+.ac .album-dot,.ac .song-item::before,.ac .playing-bars span{background:var(--accent2);}
+.ac .song-item.playing{border-color:rgba(126,184,164,0.25);}
+.ac .song-item.playing .song-name,.ac .song-item.playing .song-num{color:var(--accent2);}
+.ac .play-icon-wrap svg{fill:var(--accent2);}
+
+.a1 .album-dot,.a1 .song-item::before,.a1 .playing-bars span{background:var(--accent);}
+.a1 .song-item.playing{border-color:rgba(196,163,90,0.25);}
+.a1 .song-item.playing .song-name,.a1 .song-item.playing .song-num{color:var(--accent);}
+.a1 .play-icon-wrap svg{fill:var(--accent);}
+
+.a2 .album-dot,.a2 .song-item::before,.a2 .playing-bars span{background:var(--accent3);}
+.a2 .song-item.playing{border-color:rgba(160,124,197,0.25);}
+.a2 .song-item.playing .song-name,.a2 .song-item.playing .song-num{color:var(--accent3);}
+.a2 .play-icon-wrap svg{fill:var(--accent3);}
+
+.acd .album-dot,.acd .song-item::before,.acd .playing-bars span{background:var(--accent4);}
+.acd .song-item.playing{border-color:rgba(224,122,122,0.25);}
+.acd .song-item.playing .song-name,.acd .song-item.playing .song-num{color:var(--accent4);}
+.acd .play-icon-wrap svg{fill:var(--accent4);}
+
+/* ── CD Gallery ── */
+.cd-gallery{
+  display:flex;
+  gap:2rem;
+  align-items:center;
+  justify-content:center;
+  margin-bottom:2rem;
+  padding:2rem 1.5rem;
+  background:linear-gradient(135deg,rgba(14,14,20,0.95) 0%,rgba(30,20,35,0.95) 100%);
+  border:1px solid rgba(224,122,122,0.15);
+  border-radius:12px;
+  position:relative;
+  overflow:hidden;
+}
+.cd-gallery::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:radial-gradient(ellipse at 30% 50%,rgba(224,122,122,0.08) 0%,transparent 60%),
+             radial-gradient(ellipse at 70% 50%,rgba(100,80,140,0.08) 0%,transparent 60%);
+  pointer-events:none;
+}
+
+/* Portada (cobert.jpg) */
+.cd-cover-wrap{
+  position:relative;
+  flex-shrink:0;
+  width:240px;
+}
+.cd-cover-wrap img{
+  width:100%;
+  border-radius:6px;
+  box-shadow:0 8px 40px rgba(0,0,0,0.6),0 2px 8px rgba(224,122,122,0.15);
+  display:block;
+  transition:transform 0.4s ease;
+}
+.cd-cover-wrap:hover img{transform:scale(1.02);}
+.cd-cover-label{
+  margin-top:0.6rem;
+  text-align:center;
+  font-size:0.6rem;
+  letter-spacing:0.3em;
+  color:var(--muted);
+  text-transform:uppercase;
+}
+
+/* Disco (cd.png) */
+.cd-disc-wrap{
+  position:relative;
+  flex-shrink:0;
+  width:200px;
+  height:200px;
+}
+.cd-disc-wrap img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  border-radius:50%;
+  filter:drop-shadow(0 6px 24px rgba(0,0,0,0.7)) drop-shadow(0 0 16px rgba(224,122,122,0.12));
+  animation:spin 18s linear infinite;
+  animation-play-state:paused;
+  transition:filter 0.4s;
+}
+.cd-disc-wrap img.spinning{animation-play-state:running;}
+.cd-disc-wrap:hover img{filter:drop-shadow(0 8px 32px rgba(0,0,0,0.8)) drop-shadow(0 0 24px rgba(224,122,122,0.25));}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.cd-disc-label{
+  margin-top:0.6rem;
+  text-align:center;
+  font-size:0.6rem;
+  letter-spacing:0.3em;
+  color:var(--muted);
+  text-transform:uppercase;
+}
+
+/* Texto lateral */
+.cd-info{
+  flex:1;
+  min-width:0;
+  padding:0 0.5rem;
+}
+.cd-info .ohad-logo{
+  font-family:'Playfair Display',serif;
+  font-style:italic;
+  font-size:1.5rem;
+  color:var(--accent4);
+  margin-bottom:0.3rem;
+  letter-spacing:0.05em;
+}
+.cd-info .cd-title{
+  font-family:'Playfair Display',serif;
+  font-size:1.1rem;
+  font-weight:400;
+  color:var(--text);
+  margin-bottom:0.5rem;
+  line-height:1.4;
+}
+.cd-info .cd-artists{
+  font-family:'Playfair Display',serif;
+  font-style:italic;
+  font-size:0.95rem;
+  color:var(--accent);
+  margin-bottom:1rem;
+}
+.cd-tracklist{
+  list-style:none;
+  border-top:1px solid rgba(255,255,255,0.06);
+  padding-top:0.8rem;
+}
+.cd-tracklist li{
+  display:flex;
+  gap:0.6rem;
+  font-size:0.72rem;
+  color:var(--muted);
+  padding:0.2rem 0;
+  line-height:1.5;
+}
+.cd-tracklist li .tnum{
+  color:rgba(224,122,122,0.5);
+  font-variant-numeric:tabular-nums;
+  flex-shrink:0;
+  width:16px;
+  text-align:right;
+}
+.cd-tracklist li .tname{color:#b0abb8;}
+.cd-year{
+  margin-top:1rem;
+  font-size:0.62rem;
+  letter-spacing:0.25em;
+  color:var(--muted);
+  text-transform:uppercase;
+}
+
+@media(max-width:700px){
+  .cd-gallery{flex-direction:column;text-align:center;}
+  .cd-cover-wrap{width:180px;}
+  .cd-disc-wrap{width:150px;height:150px;}
+  .cd-tracklist{display:none;}
+}
+
+footer{text-align:center;padding:2rem;border-top:1px solid var(--border);color:var(--muted);font-size:0.72rem;letter-spacing:0.1em;}
+@media(max-width:640px){.progress-wrap,.vol-wrap{display:none;}#player{gap:1rem;}.historia-box{padding:1.5rem;}}
+</style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">Música de juventud · 1997 – 2000</p>
+  <h1>Canciones de <em>Abel Rubio</em></h1>
+  <p class="header-sub">97 canciones &nbsp;·&nbsp; Piano · Órgano · Guitarra · Bajo</p>
+</header>
+
+<div class="historia-wrap">
+  <div class="historia-box">
+    <p>No me di cuenta que la llama de la vela se estaba apagando. Sólo en mi corazón surgió correr por intentar grabar todas aquellas canciones que Dios había puesto en mi corazón, sin saber que iba a perder mi voz, mis ilusiones, mis sueños; se desvaneció todo en un día.</p>
+    <p>Pero gracias a los cassettes que grabé hoy puedo recordar como era mi voz, y pensar en mi adolescencia junto con todas mis ilusiones.</p>
+    <p>Mi primer CD casero a los 16 años… muchos esfuerzos y complicaciones, ya que en 1997 no habían ordenadores ni programas de música como los hay ahora.</p>
+    <div class="historia-credits">
+      <strong style="color:var(--accent);">2000 · Ohad</strong> — Abel &amp; Sara<br>
+      Título: <em>"Jesús quien calmó mi tempestad"</em><br>
+      Piano, Órgano, Guitarra y Bajo: <strong>Abel Rubio</strong> &nbsp;·&nbsp;
+      Batería: <strong>Josué Mateos</strong> &nbsp;·&nbsp;
+      Flauta: <strong>Raquel Rubio</strong>
+    </div>
+  </div>
+</div>
+
+<div id="player">
+  <div class="player-info">
+    <div id="player-title" class="no-song">Elige una canción para empezar</div>
+    <div id="player-album"></div>
+  </div>
+  <div class="player-controls">
+    <button class="ctrl-btn" id="btn-prev" title="Anterior (←)">
+      <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
+    </button>
+    <button class="ctrl-btn play-btn" id="btn-play" title="Reproducir (Espacio)">
+      <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+    </button>
+    <button class="ctrl-btn" id="btn-next" title="Siguiente (→)">
+      <svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+    </button>
+  </div>
+  <div class="progress-wrap">
+    <span class="time-label" id="t-cur">0:00</span>
+    <input type="range" id="progress-bar" min="0" max="100" value="0" step="0.1"/>
+    <span class="time-label" id="t-dur">0:00</span>
+  </div>
+  <div class="vol-wrap">
+    <svg width="14" height="14" fill="var(--muted)" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+    <input type="range" id="vol-bar" min="0" max="1" step="0.05" value="1"/>
+  </div>
+</div>
+
+<div class="content">
+  <div class="filters">
+    <button class="filter-btn active" data-filter="all">Todas (97)</button>
+    <button class="filter-btn" data-filter="ac">Canciones (25)</button>
+    <button class="filter-btn" data-filter="a1">Colección 1 (28)</button>
+    <button class="filter-btn" data-filter="a2">Colección 2 (29)</button>
+    <button class="filter-btn" data-filter="acd">CD Ohad · 2000 (15)</button>
+  </div>
+
+  <div class="album-section" data-album="ac">
+    <div class="album-header"><div class="album-dot" style="background:var(--accent2)"></div><span class="album-label">Canciones</span><div class="album-line"></div><span class="album-count">25</span></div>
+    <div class="song-list ac" id="list-ac"></div>
+  </div>
+  <div class="album-section" data-album="a1">
+    <div class="album-header"><div class="album-dot" style="background:var(--accent)"></div><span class="album-label">Colección 1</span><div class="album-line"></div><span class="album-count">28</span></div>
+    <div class="song-list a1" id="list-a1"></div>
+  </div>
+  <div class="album-section" data-album="a2">
+    <div class="album-header"><div class="album-dot" style="background:var(--accent3)"></div><span class="album-label">Colección 2</span><div class="album-line"></div><span class="album-count">29</span></div>
+    <div class="song-list a2" id="list-a2"></div>
+  </div>
+
+  <!-- ── Sección CD Ohad 2000 ── -->
+  <div class="album-section" data-album="acd">
+    <div class="album-header">
+      <div class="album-dot" style="background:var(--accent4)"></div>
+      <span class="album-label">CD Ohad · 2000 · "Jesús quien calmó mi tempestad"</span>
+      <div class="album-line"></div>
+      <span class="album-count">15</span>
+    </div>
+
+    <!-- Galería del CD -->
+    <div class="cd-gallery">
+      <div class="cd-cover-wrap">
+        <img src="cobert.jpg" alt="Portada del CD · Jesús quien calmó mi tempestad"/>
+        <div class="cd-cover-label">Portada</div>
+      </div>
+
+      <div class="cd-info">
+        <div class="ohad-logo">Ohad</div>
+        <div class="cd-title">Jesús, quien calmó mi tempestad</div>
+        <div class="cd-artists">Abel &amp; Sara</div>
+        <ol class="cd-tracklist">
+          <li><span class="tnum">1</span><span class="tname">No hay más Dios como tú</span></li>
+          <li><span class="tnum">2</span><span class="tname">Ángeles</span></li>
+          <li><span class="tnum">3</span><span class="tname">Gota a gota</span></li>
+          <li><span class="tnum">4</span><span class="tname">Cuenta la historia</span></li>
+          <li><span class="tnum">5</span><span class="tname">La gente que pasaba</span></li>
+          <li><span class="tnum">6</span><span class="tname">Dios, Dios mío</span></li>
+          <li><span class="tnum">7</span><span class="tname">Padre de padres</span></li>
+          <li><span class="tnum">8</span><span class="tname">Oh cuán bello es el Señor</span></li>
+          <li><span class="tnum">9</span><span class="tname">Dónde dejaremos el amor</span></li>
+          <li><span class="tnum">10</span><span class="tname">¿Quién es éste?</span></li>
+        </ol>
+        <div class="cd-year">Producido por Abel Rubio Hidalgo · 2000 · Ohad</div>
+      </div>
+
+      <div class="cd-disc-wrap">
+        <img id="cd-disc-img" src="cd.png" alt="Disco · CD Ohad 2000"/>
+        <div class="cd-disc-label">Disco</div>
+      </div>
+    </div>
+
+    <div class="song-list acd" id="list-acd"></div>
+  </div>
+</div>
+
+<footer>Abel Rubio · Canciones de juventud · 1997 – 2000</footer>
+
+<audio id="audio"></audio>
+
+<script>
+const SONGS=[
+  {g:"ac",a:"Canciones",n:"Aleluya",p:"aleluya.mp3"},
+  {g:"ac",a:"Canciones",n:"Alzaré mi voz",p:"alzaremivoz.mp3"},
+  {g:"ac",a:"Canciones",n:"Ata",p:"ata.mp3"},
+  {g:"ac",a:"Canciones",n:"Ayúdame",p:"ayudame.mp3"},
+  {g:"ac",a:"Canciones",n:"Bondad",p:"bondad.mp3"},
+  {g:"ac",a:"Canciones",n:"Brújula",p:"brujula.mp3"},
+  {g:"ac",a:"Canciones",n:"Canon de Adoración",p:"canondeadoracion.mp3"},
+  {g:"ac",a:"Canciones",n:"Canto al Rey",p:"cantoalrey.mp3"},
+  {g:"ac",a:"Canciones",n:"Con mi Balanza",p:"conmibalanza.mp3"},
+  {g:"ac",a:"Canciones",n:"Daniel",p:"daniel.mp3"},
+  {g:"ac",a:"Canciones",n:"De las Diez",p:"delasdiez.mp3"},
+  {g:"ac",a:"Canciones",n:"Efecto Mariposa",p:"efectomariposa.mp3"},
+  {g:"ac",a:"Canciones",n:"Ester",p:"ester.mp3"},
+  {g:"ac",a:"Canciones",n:"Ha llegado el tiempo",p:"hallegadoeltiempo.mp3"},
+  {g:"ac",a:"Canciones",n:"Ha venido",p:"havenido.mp3"},
+  {g:"ac",a:"Canciones",n:"Mensajes Ocultos",p:"mensajesocultos.mp3"},
+  {g:"ac",a:"Canciones",n:"Milagro",p:"milagro.mp3"},
+  {g:"ac",a:"Canciones",n:"Desde mi Corazón",p:"desdemicorazon.mp3"},
+  {g:"ac",a:"Canciones",n:"Mirad cuán bueno",p:"miradcuanbueno.mp3"},
+  {g:"ac",a:"Canciones",n:"Paloma Mensajera",p:"palomamensajera.mp3"},
+  {g:"ac",a:"Canciones",n:"Gritaría si pudiera",p:"sipudiera.mp3"},
+  {g:"ac",a:"Canciones",n:"Te Alabaré",p:"tealabare.mp3"},
+  {g:"ac",a:"Canciones",n:"Un joven soy",p:"unjovensoy.mp3"},
+  {g:"ac",a:"Canciones",n:"Vivo Feliz",p:"vivofeliz.mp3"},
+  {g:"ac",a:"Canciones",n:"Yo te responderé",p:"yoterespondere.mp3"},
+  {g:"a1",a:"Colección 1",n:"Aquel Samaritano",p:"canciones_ar1/aquelsamaritano.mp3"},
+  {g:"a1",a:"Colección 1",n:"El Amor",p:"canciones_ar1/elamor.mp3"},
+  {g:"a1",a:"Colección 1",n:"El Árbol",p:"canciones_ar1/elarbol.mp3"},
+  {g:"a1",a:"Colección 1",n:"El Vendrá",p:"canciones_ar1/elvendra.mp3"},
+  {g:"a1",a:"Colección 1",n:"El Violín",p:"canciones_ar1/elviolin.mp3"},
+  {g:"a1",a:"Colección 1",n:"Espíritu, Espíritu",p:"canciones_ar1/espirituespiritu.mp3"},
+  {g:"a1",a:"Colección 1",n:"Estrellita",p:"canciones_ar1/estrellita.mp3"},
+  {g:"a1",a:"Colección 1",n:"Gózate",p:"canciones_ar1/gozate.mp3"},
+  {g:"a1",a:"Colección 1",n:"Imagino",p:"canciones_ar1/imagino.mp3"},
+  {g:"a1",a:"Colección 1",n:"Javeh Provee",p:"canciones_ar1/javehprovee.mp3"},
+  {g:"a1",a:"Colección 1",n:"La fuente de Vida",p:"canciones_ar1/lafuentedevida.mp3"},
+  {g:"a1",a:"Colección 1",n:"La Guerra",p:"canciones_ar1/laguerra.mp3"},
+  {g:"a1",a:"Colección 1",n:"La Rosa",p:"canciones_ar1/larosa.mp3"},
+  {g:"a1",a:"Colección 1",n:"La Soledad",p:"canciones_ar1/lasoledad.mp3"},
+  {g:"a1",a:"Colección 1",n:"Creador de mi vida",p:"canciones_ar1/creadordemivida.mp3"},
+  {g:"a1",a:"Colección 1",n:"Esclavo Liberado",p:"canciones_ar1/esclavoliberado.mp3"},
+  {g:"a1",a:"Colección 1",n:"Habéis Visto",p:"canciones_ar1/habeisvisto.mp3"},
+  {g:"a1",a:"Colección 1",n:"Mi Bautismo",p:"canciones_ar1/mibautismo.mp3"},
+  {g:"a1",a:"Colección 1",n:"Mi Dios mi Rey",p:"canciones_ar1/midiosmirey.mp3"},
+  {g:"a1",a:"Colección 1",n:"No te dejes Apagar",p:"canciones_ar1/notedejesapagar.mp3"},
+  {g:"a1",a:"Colección 1",n:"Ocurrió una Vez",p:"canciones_ar1/ocurriounavez.mp3"},
+  {g:"a1",a:"Colección 1",n:"Paciencia",p:"canciones_ar1/paciencia.mp3"},
+  {g:"a1",a:"Colección 1",n:"Quiero venir",p:"canciones_ar1/quierovenir.mp3"},
+  {g:"a1",a:"Colección 1",n:"Tu mano",p:"canciones_ar1/tumano.mp3"},
+  {g:"a1",a:"Colección 1",n:"Tú mi buen Refugio",p:"canciones_ar1/tumibuenrefugio.mp3"},
+  {g:"a1",a:"Colección 1",n:"Tu Paz",p:"canciones_ar1/tupaz.mp3"},
+  {g:"a1",a:"Colección 1",n:"Ven a Cantar",p:"canciones_ar1/venacantar.mp3"},
+  {g:"a1",a:"Colección 1",n:"El Alfarero",p:"canciones_ar1/elalfarero.mp3"},
+  {g:"a1",a:"Colección 1",n:"Mansedumbre",p:"canciones_ar1/mansedumbre.mp3"},
+  {g:"a2",a:"Colección 2",n:"Alabad",p:"canciones_ar2/alabad.mp3"},
+  {g:"a2",a:"Colección 2",n:"Al cantar",p:"canciones_ar2/alcantar.mp3"},
+  {g:"a2",a:"Colección 2",n:"Aleluya (2)",p:"canciones_ar2/aleluyah.mp3"},
+  {g:"a2",a:"Colección 2",n:"A lo mejor eso sé",p:"canciones_ar2/alomejoresose.mp3"},
+  {g:"a2",a:"Colección 2",n:"Anda sobre el Mar",p:"canciones_ar2/andasobreelmar.mp3"},
+  {g:"a2",a:"Colección 2",n:"Caminos",p:"canciones_ar2/caminos.mp3"},
+  {g:"a2",a:"Colección 2",n:"Cantemos con gozo",p:"canciones_ar2/cantemoscongozo.mp3"},
+  {g:"a2",a:"Colección 2",n:"Cielos y Tierra pasarán",p:"canciones_ar2/cielosytierrapasaran.mp3"},
+  {g:"a2",a:"Colección 2",n:"Confía en Él",p:"canciones_ar2/confiaenel.mp3"},
+  {g:"a2",a:"Colección 2",n:"Cristo estará contigo",p:"canciones_ar2/cristoestaracontigo.mp3"},
+  {g:"a2",a:"Colección 2",n:"Cristo sea formado en mí",p:"canciones_ar2/cristoseaformadoenmi.mp3"},
+  {g:"a2",a:"Colección 2",n:"Desierto",p:"canciones_ar2/desierto.mp3"},
+  {g:"a2",a:"Colección 2",n:"Es que Hay, hay, hay",p:"canciones_ar2/esquehayhayhay.mp3"},
+  {g:"a2",a:"Colección 2",n:"Estando a tu lado",p:"canciones_ar2/estandoatulado.mp3"},
+  {g:"a2",a:"Colección 2",n:"Faro",p:"canciones_ar2/faro.mp3"},
+  {g:"a2",a:"Colección 2",n:"Jesús in Love",p:"canciones_ar2/jesusinlove.mp3"},
+  {g:"a2",a:"Colección 2",n:"La creación",p:"canciones_ar2/lacreacion.mp3"},
+  {g:"a2",a:"Colección 2",n:"La venida de Cristo",p:"canciones_ar2/lavenidadecristo.mp3"},
+  {g:"a2",a:"Colección 2",n:"Mi Castillo",p:"canciones_ar2/micastillo.mp3"},
+  {g:"a2",a:"Colección 2",n:"Mi Pastor",p:"canciones_ar2/mipastor.mp3"},
+  {g:"a2",a:"Colección 2",n:"Necesitas a Dios",p:"canciones_ar2/necesitasadios.mp3"},
+  {g:"a2",a:"Colección 2",n:"Oh mi Dios donde estás",p:"canciones_ar2/ohmidiosdondeestas.mp3"},
+  {g:"a2",a:"Colección 2",n:"Oh mi Pastor",p:"canciones_ar2/ohmipastor.mp3"},
+  {g:"a2",a:"Colección 2",n:"Porque al pensar en ti",p:"canciones_ar2/porquealpensarenti.mp3"},
+  {g:"a2",a:"Colección 2",n:"Quiero ser tuyo",p:"canciones_ar2/quierosertuyo.mp3"},
+  {g:"a2",a:"Colección 2",n:"Sansón",p:"canciones_ar2/sanson.mp3"},
+  {g:"a2",a:"Colección 2",n:"Solo Tú",p:"canciones_ar2/solotu.mp3"},
+  {g:"a2",a:"Colección 2",n:"Yo quiero adorarte",p:"canciones_ar2/yoquieroadorarte.mp3"},
+  {g:"a2",a:"Colección 2",n:"Yo te amaré",p:"canciones_ar2/yoteamare.mp3"},
+  {g:"acd",a:"CD Ohad · 2000",n:"Palabras... Soy feliz",p:"canciones_arcd/palabras.mp3"},
+  {g:"acd",a:"CD Ohad · 2000",n:"Dame hijo mío",p:"canciones_arcd/damehijomio.mp3"},
+  {g:"acd",a:"CD Ohad · 2000",n:"No hay más Dios como Tú",p:"canciones_arcd/nohaymasdioscomotu.mp3"},
+  {g:"acd",a:"CD Ohad · 2000",n:"Ángeles",p:"canciones_arcd/angeles.mp3"},
+  {g:"acd",a:"CD Ohad · 2000",n:"Gota a Gota",p:"canciones_arcd/gotaagota.mp3"},
+  {g:"acd",a:"CD Ohad · 2000",n:"Cuenta la Historia",p:"canciones_arcd/cuentalahistoria.mp3"},
+  {g:"acd",a:"CD Ohad · 2000",n:"La gente que pasaba",p:"canciones_arcd/lagentequepasaba.mp3"},
+  {g:"acd",a:"CD Ohad · 2000",n:"Dios, Dios mío",p:"canciones_arcd/diosdiosmio.mp3"},
+  {g:"acd",a:"CD Ohad · 2000",n:"Padre de padres",p:"canciones_arcd/padredepadres.mp3"},
+  {g:"acd",a:"CD Ohad · 2000",n:"Oh cuán Bello es el Señor",p:"canciones_arcd/elsenor.mp3"},
+  {g:"acd",a:"CD Ohad · 2000",n:"Dónde dejaremos el Amor",p:"canciones_arcd/dondedejaremoselamor.mp3"},
+  {g:"acd",a:"CD Ohad · 2000",n:"¿Quién es éste?",p:"canciones_arcd/quieneseste.mp3"},
+  {g:"acd",a:"CD Ohad · 2000",n:"Exáltale",p:"canciones_arcd/exaltale.mp3"},
+  {g:"acd",a:"CD Ohad · 2000",n:"Y no hay más",p:"canciones_arcd/ynohaymas.mp3"},
+  {g:"acd",a:"CD Ohad · 2000",n:"Y no hay más Dios como Tú",p:"canciones_arcd/ynohaymasdioscomotu.mp3"},
+];
+
+// Render lists
+const GROUPS = ['ac','a1','a2','acd'];
+GROUPS.forEach(g => {
+  const el = document.getElementById('list-'+g);
+  SONGS.filter(s=>s.g===g).forEach((s,i)=>{
+    const idx = SONGS.indexOf(s);
+    const div = document.createElement('div');
+    div.className = 'song-item';
+    div.dataset.idx = idx;
+    div.innerHTML = `<span class="song-num">${i+1}</span>
+      <span class="play-icon-wrap"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+      <span class="song-name">${s.n}</span>
+      <div class="playing-bars"><span></span><span></span><span></span></div>`;
+    div.onclick = () => playSong(idx);
+    el.appendChild(div);
+  });
+});
+
+// Player
+const audio = document.getElementById('audio');
+const btnPlay = document.getElementById('btn-play');
+const discImg = document.getElementById('cd-disc-img');
+const PLAY_SVG = '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
+const PAUSE_SVG = '<svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>';
+let cur = -1, playing = false;
+
+function fmt(s){if(isNaN(s))return'0:00';return`${Math.floor(s/60)}:${String(Math.floor(s%60)).padStart(2,'0')}`;}
+
+function setDiscSpin(on){
+  if(discImg) discImg.classList.toggle('spinning', on);
+}
+
+function updateItems(){
+  document.querySelectorAll('.song-item').forEach(el=>{
+    el.classList.toggle('playing', +el.dataset.idx===cur);
+  });
+}
+
+function playSong(idx){
+  cur=idx; const s=SONGS[idx];
+  audio.src=s.p; audio.play();
+  playing=true; btnPlay.innerHTML=PAUSE_SVG;
+  document.getElementById('player-title').textContent=s.n;
+  document.getElementById('player-title').classList.remove('no-song');
+  const al=document.getElementById('player-album');
+  al.textContent=s.a; al.style.display='block';
+  document.getElementById('player').classList.add('active');
+  document.title=`▶ ${s.n} — Abel Rubio`;
+  setDiscSpin(s.g==='acd');
+  updateItems();
+  const el=document.querySelector(`.song-item[data-idx="${idx}"]`);
+  if(el) el.scrollIntoView({block:'nearest',behavior:'smooth'});
+}
+
+btnPlay.onclick=()=>{
+  if(cur<0){playSong(0);return;}
+  if(playing){audio.pause();playing=false;btnPlay.innerHTML=PLAY_SVG;document.title='Canciones de Abel Rubio';setDiscSpin(false);}
+  else{audio.play();playing=true;btnPlay.innerHTML=PAUSE_SVG;document.title=`▶ ${SONGS[cur].n} — Abel Rubio`;setDiscSpin(SONGS[cur].g==='acd');}
+};
+document.getElementById('btn-prev').onclick=()=>playSong(cur<=0?SONGS.length-1:cur-1);
+document.getElementById('btn-next').onclick=()=>playSong(cur>=SONGS.length-1?0:cur+1);
+audio.onended=()=>{
+  setDiscSpin(false);
+  if(cur<SONGS.length-1)playSong(cur+1);
+  else{playing=false;btnPlay.innerHTML=PLAY_SVG;}
+};
+audio.ontimeupdate=()=>{
+  if(!audio.duration)return;
+  const p=(audio.currentTime/audio.duration)*100;
+  document.getElementById('progress-bar').value=p;
+  document.getElementById('t-cur').textContent=fmt(audio.currentTime);
+  document.getElementById('t-dur').textContent=fmt(audio.duration);
+};
+document.getElementById('progress-bar').oninput=function(){if(audio.duration)audio.currentTime=(this.value/100)*audio.duration;};
+document.getElementById('vol-bar').oninput=function(){audio.volume=this.value;};
+
+// Filters
+document.querySelectorAll('.filter-btn').forEach(btn=>{
+  btn.onclick=()=>{
+    document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const f=btn.dataset.filter;
+    document.querySelectorAll('.album-section').forEach(s=>{
+      s.style.display=(f==='all'||s.dataset.album===f)?'':'none';
+    });
+  };
+});
+
+// Keyboard
+document.addEventListener('keydown',e=>{
+  if(e.target.tagName==='INPUT')return;
+  if(e.code==='Space'){e.preventDefault();btnPlay.click();}
+  if(e.code==='ArrowRight')document.getElementById('btn-next').click();
+  if(e.code==='ArrowLeft')document.getElementById('btn-prev').click();
+});
+</script>
+</body>
+</html>
