@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biografía - Halle Berry | Catwoman</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --gold: #D4AF37;
+            --dark: #0a0a0a;
+            --darker: #000000;
+            --light-gold: #e8d4a0;
+            --shadow: rgba(212, 175, 55, 0.3);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--darker);
+            color: #ffffff;
+            line-height: 1.8;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+            padding: 2rem;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo-small {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--gold);
+            text-decoration: none;
+            letter-spacing: 0.1em;
+        }
+
+        .nav-top {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gold);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--gold);
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .nav-link.active {
+            color: var(--gold);
+        }
+
+        .hero-bio {
+            position: relative;
+            padding: 6rem 2rem 4rem;
+            background: linear-gradient(135deg, var(--dark) 0%, var(--darker) 100%);
+        }
+
+        .hero-bio::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('HALLe.png');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.08;
+            z-index: 0;
+        }
+
+        .hero-bio-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .page-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 8vw, 4.5rem);
+            font-weight: 700;
+            color: var(--gold);
+            margin-bottom: 1rem;
+            letter-spacing: 0.05em;
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 300;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+        }
+
+        .content-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .bio-grid {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .bio-image-container {
+            position: sticky;
+            top: 120px;
+        }
+
+        .bio-image {
+            width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .bio-text {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .bio-text p {
+            margin-bottom: 2rem;
+            text-align: justify;
+        }
+
+        .bio-text p:last-child {
+            margin-bottom: 0;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.5);
+            font-style: italic;
+        }
+
+        .highlight {
+            color: var(--light-gold);
+            font-weight: 600;
+        }
+
+        .bottom-nav {
+            background: var(--dark);
+            padding: 3rem 2rem;
+            border-top: 1px solid rgba(212, 175, 55, 0.1);
+        }
+
+        .bottom-nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            position: relative;
+            padding: 1rem 2.5rem;
+            background: transparent;
+            border: 2px solid var(--gold);
+            color: var(--gold);
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            overflow: hidden;
+            display: inline-block;
+        }
+
+        .nav-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--gold);
+            transition: left 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            z-index: -1;
+        }
+
+        .nav-btn:hover::before {
+            left: 0;
+        }
+
+        .nav-btn:hover {
+            color: var(--darker);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px var(--shadow);
+        }
+
+        @media (max-width: 968px) {
+            .bio-grid {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .bio-image-container {
+                position: relative;
+                top: 0;
+                max-width: 400px;
+                margin: 0 auto;
+            }
+
+            .nav-top {
+                gap: 1rem;
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                justify-content: center;
+                text-align: center;
+            }
+
+            .bottom-nav-content {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .nav-btn {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <a href="index.html" class="logo-small">CATWOMAN</a>
+            <nav class="nav-top">
+                <a href="index.html" class="nav-link">Inicio</a>
+                <a href="sinopsis.html" class="nav-link">Sinopsis</a>
+                <a href="biografia.html" class="nav-link active">Biografía</a>
+                <a href="galeria.html" class="nav-link">Galería</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero-bio">
+        <div class="hero-bio-content">
+            <h1 class="page-title">Halle Berry</h1>
+            <p class="page-subtitle">Una estrella de Hollywood</p>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <div class="bio-grid">
+            <div class="bio-image-container">
+                <img src="../catwoman/aaaa.jpg" alt="Halle Berry" class="bio-image">
+            </div>
+            
+            <div class="bio-text">
+                <p>Halle Berry, con un oscar en su haber, es una de la estrellas más respetadas de Hollywood. Después de <span class="highlight">Monster's Ball</span> su carrera entró en una espiral de éxitos llevándola a ser tormenta en <span class="highlight">X-Men</span>, chica Bond en <span class="highlight">Muere otro día</span>, <span class="highlight">Los picapiedra</span>, <span class="highlight">Gothika</span> y una logradísima <span class="highlight">Catwoman</span>, donde borda el papel de la heroína felina del comic.</p>
+
+                <p>Halle empezó su carrera artística en el mundo de la moda, primero participando en diferentes concursos de belleza y después llegó a ser modelo profesional. Llegó a ser la imagen publicitaria de la marca Revlon.</p>
+
+                <p>Su experiencia en el mundo de la moda hizo que su primer papel como actriz sea el de una joven modelo en una serie de televisión, encaminándose a partir de ahí hacia la interpretación.</p>
+
+                <p>En 1991 se produjo su debut cinematográfico con la película <span class="highlight">Fiebre Salvaje</span> luego le seguirían títulos como <span class="highlight">El último Boy Scout, Boomerang: el príncipe de las mujeres</span> con Eddie Murphy. Consiguiendo en el 2002 un oscar como mejor actriz haciendo de una mujer luchadora en <span class="highlight">Monster's Ball</span>.</p>
+
+
+            </div>
+        </div>
+    </section>
+
+    <nav class="bottom-nav">
+        <div class="bottom-nav-content">
+            <a href="sinopsis.html" class="nav-btn">Sinopsis</a>
+            <a href="galeria.html" class="nav-btn">Galería</a>
+            <a href="index.html" class="nav-btn">Inicio</a>
+        </div>
+    </nav>
+</body>
+</html>

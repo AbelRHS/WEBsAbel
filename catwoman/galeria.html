@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galería - Catwoman</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --gold: #D4AF37;
+            --dark: #0a0a0a;
+            --darker: #000000;
+            --light-gold: #e8d4a0;
+            --shadow: rgba(212, 175, 55, 0.3);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--darker);
+            color: #ffffff;
+            line-height: 1.8;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+            padding: 2rem;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo-small {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--gold);
+            text-decoration: none;
+            letter-spacing: 0.1em;
+        }
+
+        .nav-top {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gold);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--gold);
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .nav-link.active {
+            color: var(--gold);
+        }
+
+        .hero-gallery {
+            position: relative;
+            padding: 6rem 2rem 4rem;
+            background: linear-gradient(135deg, var(--dark) 0%, var(--darker) 100%);
+        }
+
+        .hero-gallery-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .page-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 8vw, 4.5rem);
+            font-weight: 700;
+            color: var(--gold);
+            margin-bottom: 1rem;
+            letter-spacing: 0.05em;
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 300;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+        }
+
+        .intro-text {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.85);
+            text-align: justify;
+            line-height: 1.9;
+        }
+
+        .gallery-section {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            background: var(--dark);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px var(--shadow);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .gallery-caption {
+            padding: 1.5rem;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), rgba(0,0,0,0.7));
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+
+        .gallery-caption h3 {
+            font-size: 1rem;
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .gallery-caption p {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+        }
+
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+        }
+
+        .lightbox-content img {
+            max-width: 100%;
+            max-height: 80vh;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+
+        .lightbox-caption {
+            text-align: center;
+            margin-top: 1rem;
+            color: var(--gold);
+            font-size: 1.1rem;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--gold);
+            color: var(--darker);
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .lightbox-close:hover {
+            transform: rotate(90deg);
+            background: var(--light-gold);
+        }
+
+        .bottom-nav {
+            background: var(--dark);
+            padding: 3rem 2rem;
+            border-top: 1px solid rgba(212, 175, 55, 0.1);
+        }
+
+        .bottom-nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            position: relative;
+            padding: 1rem 2.5rem;
+            background: transparent;
+            border: 2px solid var(--gold);
+            color: var(--gold);
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            overflow: hidden;
+            display: inline-block;
+        }
+
+        .nav-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--gold);
+            transition: left 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            z-index: -1;
+        }
+
+        .nav-btn:hover::before {
+            left: 0;
+        }
+
+        .nav-btn:hover {
+            color: var(--darker);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px var(--shadow);
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                justify-content: center;
+                text-align: center;
+            }
+
+            .nav-top {
+                gap: 1rem;
+                font-size: 0.85rem;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .gallery-item img {
+                height: 250px;
+            }
+
+            .bottom-nav-content {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .nav-btn {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <a href="index.html" class="logo-small">CATWOMAN</a>
+            <nav class="nav-top">
+                <a href="index.html" class="nav-link">Inicio</a>
+                <a href="sinopsis.html" class="nav-link">Sinopsis</a>
+                <a href="biografia.html" class="nav-link">Biografía</a>
+                <a href="galeria.html" class="nav-link active">Galería</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero-gallery">
+        <div class="hero-gallery-content">
+            <h1 class="page-title">Galería</h1>
+            <p class="page-subtitle">Curiosidades de la película</p>
+        </div>
+    </section>
+
+    <div class="intro-text">
+        <p>La vi anunciada en la televisión, y deseaba verla en los cines nada más que saliera. Pero justo salió cuando estaba de vacaciones en Londres, y me decía que nada más que viniera a España tenía que ir a verla en el cine. Cuando llegué, después de un mes, fui a varios cines descubriendo que ya la habían quitado. Me desilusioné un montón pero esperaba con ilusión que pronto saliera en DVD, pasaron como cinco meses y la vi anunciada en la tele su salida a la venta. Fui por muchos centros comerciales en busca de Catwoman pero desafortunadamente no había llegado todavía a aquellos centros. No pasó ni una semana cuando mi padre me la regaló. ¡¡¡Por fin!!! No me lo podía creer, como después de verla, no haya tenido entre comillas tanto éxito en España, si estaba genial la peli, tenía un montón de acción, de amor, de todo un poco. La verdad, si aún no te la has visto te la recomiendo. Te gustará y aquí tienes unas pocas imágenes curiosas de la película Catwoman.</p>
+    </div>
+
+    <section class="gallery-section">
+        <div class="gallery-grid">
+            <div class="gallery-item" onclick="openLightbox('../catwoman/ggata.jpg', 'El látigo como cola')">
+                <img src="../catwoman/ggata.jpg" alt="Curiosidad 1">
+                <div class="gallery-caption">
+                    <h3>El látigo como cola</h3>
+                    <p>En algunas secuencias de la película, el látigo que Catwoman lleva consigo, mientras se va moviendo, hace el efecto de como si Catwoman tuviese rabo. ¿¿Curioso no??</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" onclick="openLightbox('../catwoman/hh.jpg', 'Halle Berry')">
+                <img src="../catwoman/hh.jpg" alt="Halle Berry">
+                <div class="gallery-caption">
+                    <h3>Halle Berry</h3>
+                    <p>La interpretación de Halle Berry le dio vida a esta icónica heroína felina.</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" onclick="openLightbox('../catwoman/ggato.jpg', 'El final alternativo')">
+                <img src="../catwoman/ggato.jpg" alt="Curiosidad 2">
+                <div class="gallery-caption">
+                    <h3>El final alternativo</h3>
+                    <p>Tenían un final en un principio para la peli en la que se descubría a la verdadera asesina, cerrándose así los casos, y Patience seguiría junto con el policía. Pero al final optaron por este final en el que se refleja a una Catwoman libre y sin ataduras.</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" onclick="openLightbox('../catwoman/gata.jpg', 'Los gatos del rodaje')">
+                <img src="../catwoman/gata.jpg" alt="Curiosidad 3">
+                <div class="gallery-caption">
+                    <h3>Los gatos del rodaje</h3>
+                    <p>Cuentan que trabajaron más o menos con veinte gatos, y tuvieron que entrenarlos. Y para que estos obedecieran a las reglas del guión, como subirse encima de una persona, acercarse a Halle Berry o ir hacia algún lugar, lo que hacían es atraerlos con sonidos de timbres o campanillas.</p>
+                </div>
+            </div>
+
+
+        </div>
+    </section>
+
+    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+        <button class="lightbox-close" onclick="closeLightbox()">×</button>
+        <div class="lightbox-content" onclick="event.stopPropagation()">
+            <img id="lightbox-img" src="" alt="">
+            <div class="lightbox-caption" id="lightbox-caption"></div>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <div class="bottom-nav-content">
+            <a href="sinopsis.html" class="nav-btn">Sinopsis</a>
+            <a href="biografia.html" class="nav-btn">Biografía</a>
+            <a href="index.html" class="nav-btn">Inicio</a>
+        </div>
+    </nav>
+
+    <script>
+        function openLightbox(src, caption) {
+            document.getElementById('lightbox').classList.add('active');
+            document.getElementById('lightbox-img').src = src;
+            document.getElementById('lightbox-caption').textContent = caption;
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeLightbox();
+            }
+        });
+    </script>
+</body>
+</html>
