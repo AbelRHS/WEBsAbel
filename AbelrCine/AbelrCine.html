@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AbelrCine — El Séptimo Arte</title>
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:#0a0a0f; --paper:#f5f0e8; --red:#c0392b; --gold:#c9a84c;
+  --silver:#8a8a9a; --white:#fafaf8; --dim:#1a1a2e;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Cormorant Garamond',Georgia,serif;background:var(--ink);color:var(--paper);min-height:100vh;overflow-x:hidden;}
+::-webkit-scrollbar{width:4px;} ::-webkit-scrollbar-track{background:var(--ink);} ::-webkit-scrollbar-thumb{background:var(--red);}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 48px;height:60px;display:flex;align-items:center;justify-content:space-between;background:rgba(10,10,15,0.96);backdrop-filter:blur(10px);border-bottom:1px solid rgba(192,57,43,0.18);}
+.nav-brand{font-family:'Bebas Neue',sans-serif;font-size:1.7rem;letter-spacing:4px;color:var(--white);cursor:pointer;transition:color .3s;}
+.nav-brand:hover{color:var(--gold);}
+.nav-brand span{color:var(--red);}
+.nav-links{display:flex;gap:28px;list-style:none;}
+.nav-links a{font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;color:var(--silver);text-decoration:none;transition:color .2s;cursor:pointer;padding:4px 0;border-bottom:1px solid transparent;}
+.nav-links a:hover,.nav-links a.active{color:var(--red);border-bottom-color:var(--red);}
+.nav-mobile-btn{display:none;background:none;border:1px solid rgba(192,57,43,0.4);color:var(--red);padding:6px 10px;font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:1px;cursor:pointer;}
+.nav-mobile-menu{display:none;position:fixed;top:60px;left:0;right:0;background:rgba(10,10,15,0.98);padding:20px;z-index:999;border-bottom:1px solid rgba(192,57,43,0.2);}
+.nav-mobile-menu.open{display:block;}
+.nav-mobile-menu a{display:block;padding:12px 0;font-family:'DM Mono',monospace;font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;color:var(--silver);text-decoration:none;cursor:pointer;border-bottom:1px solid rgba(255,255,255,0.05);}
+.nav-mobile-menu a:hover{color:var(--red);}
+
+/* PAGES */
+.page{display:none;min-height:100vh;padding-top:60px;}
+.page.active{display:block;}
+
+/* HERO */
+.hero{position:relative;min-height:100vh;display:flex;flex-direction:column;justify-content:center;overflow:hidden;background:var(--ink);}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 20% 50%,rgba(192,57,43,.08) 0%,transparent 60%),radial-gradient(ellipse 60% 80% at 80% 30%,rgba(201,168,76,.04) 0%,transparent 50%);}
+.strip{position:absolute;top:0;bottom:0;width:44px;background:#0f0f14;border-right:1px solid #1e1e2e;display:flex;flex-direction:column;align-items:center;padding:8px 0;overflow:hidden;}
+.strip.right{right:0;left:auto;border-right:none;border-left:1px solid #1e1e2e;}
+.hole{width:16px;height:12px;background:var(--ink);border-radius:3px;flex-shrink:0;margin:5px 0;border:1px solid #2a2a3a;animation:roll 9s linear infinite;}
+@keyframes roll{to{transform:translateY(-200px);}}
+.hero-inner{position:relative;z-index:2;padding:0 90px;}
+.eyebrow{font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:4px;text-transform:uppercase;color:var(--red);margin-bottom:20px;display:flex;align-items:center;gap:14px;}
+.eyebrow::before{content:'';width:36px;height:1px;background:var(--red);}
+.hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(5rem,13vw,11rem);line-height:.88;letter-spacing:2px;color:var(--white);margin-bottom:28px;}
+.hero-title em{color:var(--red);font-style:normal;}
+.hero-sub{font-size:1.15rem;font-weight:300;font-style:italic;color:var(--silver);max-width:440px;line-height:1.85;margin-bottom:44px;}
+.cta{display:inline-flex;align-items:center;gap:12px;padding:14px 32px;background:var(--red);color:var(--white);font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:3px;text-transform:uppercase;cursor:pointer;border:none;transition:all .3s;position:relative;overflow:hidden;}
+.cta::before{content:'';position:absolute;inset:0;background:var(--gold);transform:translateX(-100%);transition:transform .3s;}
+.cta:hover::before{transform:translateX(0);}
+.cta span{position:relative;z-index:1;}
+.cta:hover{color:var(--ink);}
+.ghost-year{position:absolute;bottom:36px;right:90px;font-family:'Bebas Neue',sans-serif;font-size:9rem;color:rgba(255,255,255,.025);letter-spacing:-4px;pointer-events:none;user-select:none;}
+
+/* SECTION CARDS */
+.cards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--dim);}
+.card{background:var(--ink);padding:36px 28px;cursor:pointer;transition:background .3s;position:relative;overflow:hidden;border:none;text-align:left;color:inherit;width:100%;}
+.card::after{content:'';position:absolute;bottom:0;left:0;height:2px;width:0;background:var(--red);transition:width .4s;}
+.card:hover{background:#0f0f18;}
+.card:hover::after{width:100%;}
+.card-num{font-family:'DM Mono',monospace;font-size:.58rem;color:var(--red);letter-spacing:2px;display:block;margin-bottom:16px;}
+.card-title{font-family:'Bebas Neue',sans-serif;font-size:1.9rem;letter-spacing:2px;color:var(--white);margin-bottom:10px;line-height:1;}
+.card-desc{font-size:.88rem;color:var(--silver);line-height:1.6;font-style:italic;}
+.card-arrow{position:absolute;bottom:24px;right:24px;color:var(--silver);font-size:1.1rem;transition:all .3s;}
+.card:hover .card-arrow{color:var(--red);transform:translate(4px,-4px);}
+
+/* CONTENT LAYOUT */
+.content{max-width:1080px;margin:0 auto;padding:56px 44px 100px;}
+.pg-header{margin-bottom:56px;padding-bottom:28px;border-bottom:1px solid rgba(192,57,43,.18);}
+.pg-eyebrow{font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:4px;text-transform:uppercase;color:var(--red);margin-bottom:14px;display:flex;align-items:center;gap:12px;}
+.pg-eyebrow::before{content:'';display:inline-block;width:22px;height:1px;background:var(--red);}
+.pg-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.8rem,6vw,5rem);line-height:.93;letter-spacing:2px;color:var(--white);}
+.pg-title em{color:var(--red);font-style:normal;}
+.back{display:inline-flex;align-items:center;gap:8px;padding:8px 0;background:none;border:none;color:var(--silver);font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:color .2s;margin-bottom:36px;}
+.back:hover{color:var(--red);}
+
+/* INLINE LINKS (text that navigates) */
+.ilink{color:var(--gold);cursor:pointer;text-decoration:none;border-bottom:1px solid rgba(201,168,76,.3);transition:all .2s;font-style:normal;}
+.ilink:hover{color:var(--white);border-bottom-color:var(--white);}
+
+/* TIMELINE */
+.timeline{position:relative;padding-left:36px;}
+.timeline::before{content:'';position:absolute;left:0;top:8px;bottom:0;width:1px;background:linear-gradient(to bottom,var(--red),transparent);}
+.tentry{position:relative;margin-bottom:52px;opacity:0;transform:translateY(18px);transition:opacity .5s,transform .5s;}
+.tentry.vis{opacity:1;transform:translateY(0);}
+.tentry::before{content:'';position:absolute;left:-40px;top:6px;width:8px;height:8px;background:var(--red);border-radius:50%;box-shadow:0 0 10px rgba(192,57,43,.6);}
+.t-era{font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:6px;}
+.t-head{font-family:'Bebas Neue',sans-serif;font-size:1.55rem;letter-spacing:2px;color:var(--white);margin-bottom:10px;}
+.t-body{font-size:.98rem;line-height:1.88;color:rgba(245,240,232,.75);font-weight:300;}
+.t-body strong{color:var(--paper);font-weight:600;}
+
+/* MOVIES GRID */
+.mg{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1px;background:var(--dim);margin-bottom:1px;}
+.mc{background:var(--ink);padding:28px;transition:background .3s;cursor:pointer;border:none;text-align:left;color:inherit;width:100%;}
+.mc:hover{background:#0e0e18;}
+.mc-icon{font-size:4rem;margin-bottom:16px;display:block;transition:transform .4s;}
+.mc:hover .mc-icon{transform:scale(1.08) rotate(-3deg);}
+.mc-genre{font-family:'DM Mono',monospace;font-size:.56rem;letter-spacing:3px;text-transform:uppercase;color:var(--red);margin-bottom:6px;}
+.mc-name{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:1px;color:var(--white);margin-bottom:6px;line-height:1;}
+.mc-year{font-family:'DM Mono',monospace;font-size:.65rem;color:var(--gold);margin-bottom:14px;}
+.mc-text{font-size:.9rem;line-height:1.75;color:rgba(245,240,232,.7);font-weight:300;}
+.mc-link{margin-top:12px;font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:2px;color:var(--red);display:block;}
+
+/* BIO LAYOUT */
+.bio-wrap{display:grid;grid-template-columns:1fr 320px;gap:56px;align-items:start;}
+.bio-text h3{font-family:'Bebas Neue',sans-serif;font-size:1.35rem;letter-spacing:2px;color:var(--gold);margin:28px 0 10px;}
+.bio-text h3:first-child{margin-top:0;}
+.bio-text p{font-size:.98rem;line-height:1.9;color:rgba(245,240,232,.78);font-weight:300;margin-bottom:14px;}
+.bio-text strong{color:var(--paper);font-weight:600;}
+.bio-side{position:sticky;top:80px;}
+.portrait{width:100%;aspect-ratio:3/4;background:linear-gradient(135deg,#1a1a2e,#0f0f18);display:flex;align-items:center;justify-content:center;font-size:6rem;margin-bottom:20px;border:1px solid #2a2a3a;overflow:hidden;}
+.portrait img{width:100%;height:100%;object-fit:cover;}
+.meta-box{background:#0f0f18;border:1px solid #2a2a3a;padding:20px;}
+.mrow{display:flex;justify-content:space-between;align-items:baseline;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:.86rem;}
+.mrow:last-child{border-bottom:none;}
+.mlabel{font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:2px;text-transform:uppercase;color:var(--silver);}
+.mval{color:var(--paper);font-style:italic;font-weight:300;}
+
+/* FILMOGRAPHY */
+.filmo{margin-top:44px;}
+.filmo-title{font-family:'Bebas Neue',sans-serif;font-size:1.7rem;letter-spacing:2px;color:var(--white);margin-bottom:20px;display:flex;align-items:center;gap:14px;}
+.filmo-title::after{content:'';flex:1;height:1px;background:linear-gradient(to right,rgba(192,57,43,.35),transparent);}
+.fi{display:flex;align-items:center;gap:18px;padding:11px 0;border-bottom:1px solid rgba(255,255,255,.04);transition:padding .2s;}
+.fi:hover{padding-left:6px;}
+.fi-y{font-family:'DM Mono',monospace;font-size:.65rem;color:var(--red);width:38px;flex-shrink:0;}
+.fi-t{font-size:.93rem;color:var(--paper);font-style:italic;}
+.fi-r{margin-left:auto;font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:1px;color:var(--silver);}
+
+/* ACTOR CARDS */
+.actors{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--dim);}
+.acard{background:var(--ink);padding:36px;cursor:pointer;transition:background .3s;border:none;text-align:left;width:100%;color:inherit;}
+.acard:hover{background:#0d0d18;}
+.acard-icon{font-size:3.5rem;margin-bottom:14px;display:block;}
+.acard-name{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:2px;color:var(--white);margin-bottom:6px;}
+.acard-role{font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:3px;text-transform:uppercase;color:var(--red);margin-bottom:14px;}
+.acard-preview{font-size:.88rem;color:var(--silver);font-style:italic;line-height:1.6;}
+.acard-goto{margin-top:14px;font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:2px;color:var(--red);}
+
+/* QUOTE */
+.quote{border-left:3px solid var(--red);padding:22px 28px;margin:36px 0;background:rgba(192,57,43,.04);}
+.q-text{font-size:1.25rem;font-style:italic;color:var(--paper);line-height:1.7;margin-bottom:10px;}
+.q-who{font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:var(--red);}
+
+/* AWARDS */
+.awards{display:flex;gap:10px;flex-wrap:wrap;margin:28px 0;}
+.award{display:flex;align-items:center;gap:8px;padding:7px 14px;border:1px solid rgba(201,168,76,.3);background:rgba(201,168,76,.05);font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:1px;color:var(--gold);}
+
+/* MOULIN HERO */
+.moulin-hero{height:300px;background:linear-gradient(135deg,#1a0010,#2d0015,#0a0005);display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;}
+.moulin-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(192,57,43,.3) 0%,transparent 70%);}
+.moulin-big{font-family:'Bebas Neue',sans-serif;font-size:clamp(3.5rem,9vw,7.5rem);letter-spacing:4px;color:var(--red);text-shadow:0 0 80px rgba(192,57,43,.5);position:relative;z-index:1;text-align:center;}
+.stars-bg{position:absolute;inset:0;overflow:hidden;pointer-events:none;}
+.star{position:absolute;width:2px;height:2px;background:var(--gold);border-radius:50%;animation:twinkle 3s ease-in-out infinite;}
+@keyframes twinkle{0%,100%{opacity:.2;transform:scale(1)}50%{opacity:1;transform:scale(1.5)}}
+
+/* MAR HERO */
+.mar-hero{height:260px;background:linear-gradient(135deg,#001020,#002040,#000810);display:flex;align-items:flex-end;padding:36px 44px;position:relative;overflow:hidden;}
+.mar-hero::before{content:'🌊';position:absolute;font-size:18rem;opacity:.04;bottom:-50px;right:-30px;pointer-events:none;}
+
+/* FORM */
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--dim);margin-bottom:1px;}
+.ffield{background:var(--ink);padding:26px;}
+.ffield.full{grid-column:1/-1;}
+.flabel{font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:3px;text-transform:uppercase;color:var(--silver);display:block;margin-bottom:8px;}
+.finput{width:100%;background:transparent;border:none;border-bottom:1px solid rgba(192,57,43,.3);padding:8px 0;color:var(--paper);font-family:'Cormorant Garamond',serif;font-size:1rem;outline:none;transition:border-color .2s;}
+.finput:focus{border-color:var(--red);}
+.finput::placeholder{color:rgba(138,138,154,.4);font-style:italic;}
+textarea.finput{resize:vertical;min-height:110px;}
+.radio-row{display:flex;gap:20px;flex-wrap:wrap;margin-top:6px;}
+.ropt{display:flex;align-items:center;gap:7px;cursor:pointer;font-size:.93rem;color:var(--paper);}
+.ropt input[type=radio]{appearance:none;width:13px;height:13px;border:1px solid var(--red);border-radius:50%;cursor:pointer;position:relative;flex-shrink:0;}
+.ropt input[type=radio]:checked::after{content:'';position:absolute;inset:3px;background:var(--red);border-radius:50%;}
+.submit{display:inline-flex;align-items:center;gap:10px;padding:14px 38px;background:transparent;border:1px solid var(--red);color:var(--red);font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:3px;text-transform:uppercase;cursor:pointer;transition:all .3s;margin-top:28px;}
+.submit:hover{background:var(--red);color:var(--white);}
+
+/* LINKS */
+.lgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--dim);margin-bottom:40px;}
+.lcard{background:var(--ink);padding:26px;text-decoration:none;color:inherit;transition:background .3s;display:block;}
+.lcard:hover{background:#13131e;}
+.lcard-num{font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:2px;color:var(--silver);margin-bottom:10px;}
+.lcard-name{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:2px;color:var(--white);margin-bottom:4px;transition:color .2s;}
+.lcard:hover .lcard-name{color:var(--red);}
+.lcard-url{font-family:'DM Mono',monospace;font-size:.58rem;color:var(--silver);}
+
+/* INFO INLINE BOX */
+.ibox{background:#0f0f18;border:1px solid #2a2a3a;padding:22px 26px;margin:28px 0;}
+.ibox-label{font-family:'DM Mono',monospace;font-size:.56rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:12px;}
+.ibox p{font-size:.93rem;color:rgba(245,240,232,.72);font-style:italic;line-height:1.75;}
+
+/* DATA ROW */
+.data-row{display:flex;gap:32px;flex-wrap:wrap;margin-bottom:36px;}
+.data-item .di-label{font-family:'DM Mono',monospace;font-size:.52rem;color:var(--silver);letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;}
+.data-item .di-val{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:1px;color:var(--white);}
+
+/* TWO-COL TEXT */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:32px;background:var(--dim);margin-bottom:2px;}
+.tcol{background:var(--ink);padding:36px;}
+.tcol-label{font-family:'DM Mono',monospace;font-size:.56rem;letter-spacing:3px;text-transform:uppercase;color:var(--red);margin-bottom:14px;}
+.tcol-title{font-family:'Bebas Neue',sans-serif;font-size:2.2rem;letter-spacing:1px;color:var(--white);margin-bottom:16px;line-height:1;}
+.tcol p{font-size:.93rem;line-height:1.85;color:rgba(245,240,232,.72);font-weight:300;margin-bottom:12px;}
+
+/* FOOTER */
+footer{background:#060609;border-top:1px solid #1a1a2e;padding:36px 48px;display:flex;align-items:center;justify-content:space-between;}
+.fb{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:4px;color:rgba(255,255,255,.15);}
+.fb span{color:rgba(192,57,43,.35);}
+.fc{font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:2px;color:rgba(138,138,154,.35);}
+
+/* ANIM */
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.f1{animation:fadeUp .6s ease both;}
+.f2{animation:fadeUp .6s .1s ease both;}
+.f3{animation:fadeUp .6s .2s ease both;}
+.f4{animation:fadeUp .6s .3s ease both;}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  nav{padding:0 16px;}
+  .nav-links{display:none;}
+  .nav-mobile-btn{display:block;}
+  .hero-inner{padding:0 56px 0 64px;}
+  .cards-grid{grid-template-columns:1fr 1fr;}
+  .content{padding:36px 20px 80px;}
+  .bio-wrap{grid-template-columns:1fr;}
+  .bio-side{position:relative;top:0;}
+  .two-col{grid-template-columns:1fr;}
+  .lgrid{grid-template-columns:1fr 1fr;}
+  .fgrid{grid-template-columns:1fr;}
+  .ffield.full{grid-column:1;}
+  .actors{grid-template-columns:1fr;}
+  footer{flex-direction:column;gap:14px;text-align:center;}
+}
+@media(max-width:600px){
+  .cards-grid{grid-template-columns:1fr;}
+  .hero-title{font-size:4rem;}
+  .lgrid{grid-template-columns:1fr;}
+  .data-row{gap:18px;}
+  .strip{width:28px;}
+  .hole{width:10px;height:9px;}
+  .hero-inner{padding:0 38px 0 46px;}
+}
+
+/* CLAQUETAS HERO */
+.claquetas-wrap{position:absolute;right:200px;top:50%;transform:translateY(-50%);display:flex;gap:0;align-items:center;z-index:3;pointer-events:auto;}
+.claqueta-item{position:relative;cursor:pointer;width:220px;text-decoration:none;}
+.claqueta-item:first-child{transform:rotate(-8deg) translateY(20px);z-index:1;}
+.claqueta-item:last-child{transform:rotate(5deg) translateX(-30px);z-index:2;}
+.claqueta-item img{width:100%;display:block;filter:drop-shadow(0 8px 24px rgba(0,0,0,.7));}
+.claqueta-label{text-align:center;font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:2px;text-transform:uppercase;color:var(--silver);margin-top:10px;transition:color .2s;}
+.claqueta-item:hover .claqueta-label{color:var(--red);}
+.claqueta-play{display:none;}
+
+/* YOUTUBE MODAL */
+.yt-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9000;align-items:center;justify-content:center;backdrop-filter:blur(6px);}
+.yt-modal.open{display:flex;}
+.yt-box{background:#0a0a0f;border:1px solid rgba(192,57,43,.35);width:min(860px,92vw);padding:28px;}
+.yt-close{float:right;background:none;border:none;color:var(--silver);font-size:1.3rem;cursor:pointer;line-height:1;transition:color .2s;}
+.yt-close:hover{color:var(--red);}
+.yt-title{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:3px;color:var(--white);margin-bottom:16px;}
+.yt-frame{position:relative;padding-bottom:56.25%;height:0;overflow:hidden;}
+.yt-frame iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none;}
+
+@media(max-width:900px){
+  .claquetas-wrap{position:relative;right:auto;top:auto;transform:none;justify-content:center;margin-top:32px;padding:0 20px;}
+  .claqueta-item{width:160px;}
+}
+@media(max-width:600px){
+  .claqueta-item{width:130px;}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════ NAV ══════ -->
+<nav>
+  <div class="nav-brand" onclick="go('home')">ABEL<span>R</span>CINE</div>
+  <ul class="nav-links">
+    <li><a id="n-home" class="active" onclick="go('home')">Inicio</a></li>
+    <li><a id="n-historia" onclick="go('historia')">Historia</a></li>
+    <li><a id="n-espanol" onclick="go('espanol')">Cine Español</a></li>
+    <li><a id="n-moulin" onclick="go('moulin')">Moulin Rouge</a></li>
+    <li><a id="n-maradentro" onclick="go('maradentro')">Mar Adentro</a></li>
+    
+  </ul>
+  <button class="nav-mobile-btn" onclick="toggleMenu()">☰ MENÚ</button>
+</nav>
+<div class="nav-mobile-menu" id="mobile-menu">
+  <a onclick="go('home');toggleMenu()">Inicio</a>
+  <a onclick="go('historia');toggleMenu()">Historia del Cine</a>
+  <a onclick="go('espanol');toggleMenu()">Cine Español</a>
+  <a onclick="go('moulin');toggleMenu()">Moulin Rouge</a>
+  <a onclick="go('maradentro');toggleMenu()">Mar Adentro</a>
+  <a onclick="go('nicole');toggleMenu()">Nicole Kidman</a>
+  <a onclick="go('ewan');toggleMenu()">Ewan McGregor</a>
+  
+</div>
+
+<!-- ══════════════════════════════════════════
+     HOME
+══════════════════════════════════════════ -->
+<div id="p-home" class="page active">
+  <div class="hero">
+    <div class="hero-bg"></div>
+    <div class="strip" id="strip-l">
+      <div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div>
+      <div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div>
+      <div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div>
+      <div class="hole"></div><div class="hole"></div><div class="hole"></div>
+    </div>
+    <div class="strip right" id="strip-r">
+      <div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div>
+      <div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div>
+      <div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div>
+      <div class="hole"></div><div class="hole"></div><div class="hole"></div>
+    </div>
+    <div class="hero-inner">
+      <div class="eyebrow f1">El Séptimo Arte</div>
+      <h1 class="hero-title f2">ABEL<em>R</em><br>CINE</h1>
+      <p class="hero-sub f3">Una web dedicada al cine, sus curiosidades, historia y los grandes protagonistas del celuloide.</p>
+      <button class="cta f4" onclick="go('historia')"><span>▶ Explorar el cine</span></button>
+    </div>
+
+    <!-- CLAQUETAS -->
+    <div class="claquetas-wrap">
+      <a class="claqueta-item f3" href="https://www.youtube.com/watch?v=Fq3qdyBvPjk" target="_blank" rel="noopener" title="Venganza del Más Allá">
+        <img src="claqueta_VDMA.png" alt="Venganza del Más Allá">
+        <div class="claqueta-play">▶</div>
+        <div class="claqueta-label">Venganza del Más Allá</div>
+      </a>
+      <a class="claqueta-item f4" href="https://www.youtube.com/watch?v=OGjh3sG8ObE" target="_blank" rel="noopener" title="La Vida de un Celiaco">
+        <img src="claqueta_LVDUC.png" alt="La Vida de un Celiaco">
+        <div class="claqueta-play">▶</div>
+        <div class="claqueta-label">La Vida de un Celiaco</div>
+      </a>
+    </div>
+
+    <div class="ghost-year">2004</div>
+  </div>
+
+
+  <div class="cards-grid">
+    <button class="card" onclick="go('historia')">
+      <span class="card-num">01 — Historia</span>
+      <div class="card-title">Historia<br>del Cine</div>
+      <div class="card-desc">De los hermanos Lumière a Hollywood. El nacimiento del séptimo arte.</div>
+      <span class="card-arrow">↗</span>
+    </button>
+    <button class="card" onclick="go('espanol')">
+      <span class="card-num">02 — Nacional</span>
+      <div class="card-title">Cine<br>Español</div>
+      <div class="card-desc">Amenábar, Bardem y el renacimiento del cine en España.</div>
+      <span class="card-arrow">↗</span>
+    </button>
+    <button class="card" onclick="go('moulin')">
+      <span class="card-num">03 — Película</span>
+      <div class="card-title">Moulin<br>Rouge</div>
+      <div class="card-desc">Musical, romance y exceso en el París de 1900.</div>
+      <span class="card-arrow">↗</span>
+    </button>
+    <button class="card" onclick="go('maradentro')">
+      <span class="card-num">04 — Película</span>
+      <div class="card-title">Mar<br>Adentro</div>
+      <div class="card-desc">Premio Oscar. La historia real de Ramón Sampedro.</div>
+      <span class="card-arrow">↗</span>
+    </button>
+    <button class="card" onclick="go('nicole')">
+      <span class="card-num">05 — Biografía</span>
+      <div class="card-title">Nicole<br>Kidman</div>
+      <div class="card-desc">De Australia a Hollywood. Una carrera marcada por la versatilidad.</div>
+      <span class="card-arrow">↗</span>
+    </button>
+    <button class="card" onclick="go('ewan')">
+      <span class="card-num">06 — Biografía</span>
+      <div class="card-title">Ewan<br>McGregor</div>
+      <div class="card-desc">De Trainspotting a Star Wars. El escocés más carismático del cine.</div>
+      <span class="card-arrow">↗</span>
+    </button>
+  </div>
+
+  <footer>
+    <div class="fb">ABEL<span>R</span>CINE</div>
+    <div class="fc">Esta web está dedicada al cine y sus detalles · Abel R.</div>
+  </footer>
+</div>
+
+<!-- ══════════════════════════════════════════
+     HISTORIA DEL CINE
+══════════════════════════════════════════ -->
+<div id="p-historia" class="page">
+  <div class="content">
+    <button class="back" onclick="go('home')">← Inicio</button>
+    <div class="pg-header">
+      <div class="pg-eyebrow">Historia del Cine</div>
+      <h1 class="pg-title">De la Feria<br>a <em>Hollywood</em></h1>
+    </div>
+    <div class="timeline">
+
+      <div class="tentry">
+        <div class="t-era">Orígenes · 1895</div>
+        <div class="t-head">El Cinematógrafo Como Atracción de Feria</div>
+        <div class="t-body">Se podría decir que, en general, el cinematógrafo es en sus comienzos una atracción de feria. Se realizaron numerosos cortos a principios del siglo XX con el fin de proyectarlos para los visitantes de las ferias.</div>
+      </div>
+
+      <div class="tentry">
+        <div class="t-era">Francia · 1895–1914</div>
+        <div class="t-head">Los Hermanos Lumière y la Primera Industria</div>
+        <div class="t-body">La primera industria del cine se desarrolla en <strong>Francia</strong> impulsada por los <strong>hermanos Lumière</strong>. Aprovechando su fábrica de placas fotográficas, comenzaron a distribuir sus aparatos de filmación cinematográfica. El éxito fue tan grande que el cinematógrafo se extendió a Gran Bretaña, Alemania e Italia.</div>
+      </div>
+
+      <div class="tentry">
+        <div class="t-era">Estados Unidos · 1900–1914</div>
+        <div class="t-head">La Resistencia y la Conquista Americana</div>
+        <div class="t-body">En Estados Unidos, a principios de siglo, no se permitía la entrada del cine por considerarse una amenaza para su patentado. Sin embargo, al ver cómo Europa generaba dinero, los empresarios estadounidenses cambiaron de idea. Las salas de proyecciones se llamaron <strong>níkel odeones</strong>, pues la entrada costaba una moneda de níquel de cinco centavos.</div>
+      </div>
+
+      <div class="tentry">
+        <div class="t-era">I Guerra Mundial · 1914–1918</div>
+        <div class="t-head">La Migración Europea y el Nacimiento de Hollywood</div>
+        <div class="t-body">Las producciones europeas se paralizan por la guerra, lo que provoca que los cineastas se trasladen a EE.UU. A finales de 1918 se instalan en <strong>Hollywood</strong>, elegido por el bajo coste de sus terrenos. La industria americana supera definitivamente a la europea. Aparece el primer largometraje europeo, <em>Viaje a la Luna</em> (1902), mientras EE.UU. realiza su primera película con argumento (1903).</div>
+      </div>
+
+      <div class="tentry">
+        <div class="t-era">Entreguerras · Tres Grandes Cinematografías</div>
+        <div class="t-head">Alemania, Rusia y Francia</div>
+        <div class="t-body">El cine <strong>alemán</strong> es de realismo impresionista. El cine <strong>ruso</strong>, controlado por el estado bolchevique, tiene carácter educativo y propagandístico — entre los cineastas rusos destaca <strong>Eisenstein</strong> con <em>La Huelga</em> (1924). El cine <strong>francés</strong> exalta glorias nacionales y tiene una corriente vanguardista.</div>
+      </div>
+
+      <div class="tentry">
+        <div class="t-era">Hollywood · 1920s</div>
+        <div class="t-head">El Star System y el Cine Mudo</div>
+        <div class="t-body">En Norteamérica el cine se convierte en una enorme industria. Aparece el <strong>Star System</strong>. El cine mudo da figuras icónicas como <strong>Charles Chaplin</strong>, <strong>Buster Keaton</strong> y el dúo <strong>Laurel &amp; Hardy</strong>. También son de gran importancia las comedias románticas.</div>
+      </div>
+
+      <div class="tentry">
+        <div class="t-era">La Revolución Sonora · 1926–1932</div>
+        <div class="t-head">El Cine Habla</div>
+        <div class="t-body"><strong>La Warner</strong> encontró el cine sonoro con <em>El Cantante de Jazz</em> (A. Jolson, 1926). La primera película completamente hablada fue <em>Las Luces de Nueva York</em> (1928). El cine sonoro provocó una revolución: muchos actores del mudo no tenían voz apropiada. Esto se refleja magistralmente en <em>"Cantando Bajo la Lluvia"</em> (1952).<br><br>En 1929 el crack de Nueva York dio al cine sonoro un nuevo tema de éxito: el <strong>gangsterismo</strong>. Los tiroteos y persecuciones tenían un impacto brutal con el sonido.</div>
+      </div>
+
+      <div class="tentry">
+        <div class="t-era">El Color · 1932–1937</div>
+        <div class="t-head">El Technicolor Cambia la Pantalla</div>
+        <div class="t-body">En <strong>1932</strong> se perfeccionó el proceso <strong>Technicolor</strong>, utilizado íntegramente por primera vez en <em>Becky Sharp</em> (1937). El sonido llegó más tarde a Europa: los rusos primero con el <em>"Manifiesto del sonido"</em>, luego Francia e Inglaterra y, con mucho retraso, el cine español e italiano.</div>
+      </div>
+
+    </div>
+    <div style="margin-top:60px;">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:2px;color:var(--white);margin-bottom:20px;">Explora más</div>
+      <div class="cards-grid" style="gap:1px;">
+        <button class="card" style="padding:24px 20px;" onclick="go('espanol')">
+          <span class="card-num">→ Nacional</span>
+          <div class="card-title" style="font-size:1.5rem;">Cine Español</div>
+          <div class="card-desc">Amenábar, el Oscar y el renacimiento del cine en España.</div>
+        </button>
+        <button class="card" style="padding:24px 20px;" onclick="go('moulin')">
+          <span class="card-num">→ Película</span>
+          <div class="card-title" style="font-size:1.5rem;">Moulin Rouge</div>
+          <div class="card-desc">El musical que cautivó al mundo en 2001.</div>
+        </button>
+        <button class="card" style="padding:24px 20px;" onclick="go('maradentro')">
+          <span class="card-num">→ Premio Oscar</span>
+          <div class="card-title" style="font-size:1.5rem;">Mar Adentro</div>
+          <div class="card-desc">La obra maestra de Amenábar ganadora del Oscar.</div>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     CINE ESPAÑOL
+══════════════════════════════════════════ -->
+<div id="p-espanol" class="page">
+  <div class="content">
+    <button class="back" onclick="go('home')">← Inicio</button>
+    <div class="pg-header">
+      <div class="pg-eyebrow">Cine Nacional</div>
+      <h1 class="pg-title">Cine<br><em>Español</em></h1>
+    </div>
+
+    <div class="two-col">
+      <div class="tcol">
+        <div class="tcol-label">El Debate</div>
+        <div class="tcol-title">Denostado y Reivindicado</div>
+        <p>Denostado por muchos, parcialmente reivindicado por otros. El cine español ha sido durante décadas objeto de crítica y prejuicios. Una visión crítica de nuestro cine tan original como polémica sacude las bases del cine nacional con una propuesta que invita a la reflexión.</p>
+      </div>
+      <div class="tcol">
+        <div class="tcol-label">Las Mentiras</div>
+        <div class="tcol-title">Mitos y Realidades</div>
+        <p>Las mentiras sobre el cine español han persistido durante generaciones. Una industria que ha sabido reinventarse y sorprender al mundo con obras maestras que trascienden fronteras y conquistan los premios más importantes.</p>
+      </div>
+    </div>
+
+    <!-- AMENÁBAR -->
+    <div style="margin-top:40px;">
+      <div class="pg-eyebrow" style="margin-bottom:20px;">Director protagonista</div>
+    </div>
+    <div class="mg">
+      <button class="mc" onclick="go('maradentro')">
+        <span class="mc-icon">🎬</span>
+        <div class="mc-genre">Director · Guionista</div>
+        <div class="mc-name">Alejandro Amenábar</div>
+        <div class="mc-year">Nacido 1972 · Santiago de Chile</div>
+        <div class="mc-text">Hollywood convirtió a Amenábar en el director más joven en ganar el Oscar a la mejor película extranjera. Estudió Ciencias de la Imagen en la Universidad Complutense de Madrid. Desde su primer largo, <em>Tesis</em> (1995), demostró un talento excepcional.</div>
+        <span class="mc-link">Ver Mar Adentro →</span>
+      </button>
+      <button class="mc" onclick="go('maradentro')">
+        <span class="mc-icon">🏆</span>
+        <div class="mc-genre">Premio Oscar 2005</div>
+        <div class="mc-name">Mar Adentro</div>
+        <div class="mc-year">14 Premios Goya · Mejor Película Extranjera</div>
+        <div class="mc-text"><em>Mar adentro</em>, su cuarta película, fue vista por millones de espectadores en todo el mundo. Con el galardón de la Academia, Amenábar se convirtió en referencia indiscutible del cine en español.</div>
+        <span class="mc-link">Ver ficha completa →</span>
+      </button>
+      <button class="mc" onclick="go('maradentro')">
+        <span class="mc-icon">⭐</span>
+        <div class="mc-genre">El Reparto</div>
+        <div class="mc-name">Las Estrellas</div>
+        <div class="mc-year">Bardem, Rueda, Dueñas</div>
+        <div class="mc-text">Los actores españoles <strong>Javier Bardem</strong>, <strong>Belén Rueda</strong> y <strong>Lola Dueñas</strong> protagonizan un cine que combina profundidad dramática con rigor narrativo, cosechando reconocimientos en festivales de todo el mundo.</div>
+        <span class="mc-link">Ver Mar Adentro →</span>
+      </button>
+    </div>
+
+    <div class="quote">
+      <div class="q-text">"Un Oscar es el premio definitivo para cualquier cineasta."</div>
+      <div class="q-who">— Alejandro Amenábar</div>
+    </div>
+
+    <!-- FILMOGRAFÍA AMENÁBAR -->
+    <div class="filmo" style="margin-top:48px;">
+      <div class="filmo-title">Filmografía de Amenábar</div>
+      <div class="fi" style="cursor:pointer;" onclick="go('maradentro')">
+        <span class="fi-y">1995</span>
+        <span class="fi-t">Tesis</span>
+        <span class="fi-r">Debut / Thriller</span>
+      </div>
+      <div class="fi">
+        <span class="fi-y">1997</span>
+        <span class="fi-t">Abre los Ojos</span>
+        <span class="fi-r">Ciencia ficción</span>
+      </div>
+      <div class="fi">
+        <span class="fi-y">2001</span>
+        <span class="fi-t">Los Otros</span>
+        <span class="fi-r">Terror / Hollywood</span>
+      </div>
+      <div class="fi" style="cursor:pointer;" onclick="go('maradentro')">
+        <span class="fi-y">2004</span>
+        <span class="fi-t">Mar Adentro ✦ Oscar</span>
+        <span class="fi-r">Drama biográfico</span>
+      </div>
+    </div>
+
+    <div style="margin-top:48px;display:flex;gap:12px;flex-wrap:wrap;">
+      <button class="cta" onclick="go('maradentro')"><span>Ver Mar Adentro →</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     MOULIN ROUGE
+══════════════════════════════════════════ -->
+<div id="p-moulin" class="page">
+  <div style="padding-top:60px;">
+    <div class="moulin-hero">
+      <div class="stars-bg" id="moulin-stars"></div>
+      <div class="moulin-big">MOULIN ROUGE</div>
+    </div>
+  </div>
+  <div class="content" style="padding-top:36px;">
+    <button class="back" onclick="go('home')">← Inicio</button>
+
+    <div class="data-row">
+      <div class="data-item"><div class="di-label">Género</div><div class="di-val">Musical · Romance</div></div>
+      <div class="data-item"><div class="di-label">Año</div><div class="di-val">2001</div></div>
+      <div class="data-item"><div class="di-label">Director</div><div class="di-val">Baz Luhrmann</div></div>
+      <div class="data-item"><div class="di-label">Nominaciones Oscar</div><div class="di-val">8</div></div>
+    </div>
+
+    <p style="font-size:1.05rem;line-height:1.9;color:rgba(245,240,232,.78);font-weight:300;margin-bottom:28px;max-width:660px;">Una historia de amor ambientada en el <strong>París de 1900</strong>, en el legendario cabaret Moulin Rouge. Christian, un joven escritor, se enamora de Satine, la estrella del espectáculo. Un musical deslumbrante que mezcla canciones contemporáneas con la magia del celuloide.</p>
+
+    <div class="ibox">
+      <div class="ibox-label">🎵 Banda Sonora</div>
+      <p>La banda sonora mezcla clásicos del pop —Madonna, Elton John, David Bowie— con composiciones originales de Craig Armstrong, creando una experiencia musical única e irrepetible.</p>
+    </div>
+
+    <h2 style="font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:2px;color:var(--white);margin:40px 0 20px;">Haz clic en tu actor favorito</h2>
+    <div class="actors">
+      <button class="acard" onclick="go('nicole')">
+        <span class="acard-icon">🌹</span>
+        <div class="acard-name">Nicole Kidman</div>
+        <div class="acard-role">Satine — La Estrella del Cabaret</div>
+        <div class="acard-preview">La brillante australiana que conquistó el mundo con su interpretación de la cortesana más famosa del cine. Nominada al Oscar por este papel en 2002.</div>
+        <div class="acard-goto">Ver biografía completa →</div>
+      </button>
+      <button class="acard" onclick="go('ewan')">
+        <span class="acard-icon">✍️</span>
+        <div class="acard-name">Ewan McGregor</div>
+        <div class="acard-role">Christian — El Joven Escritor</div>
+        <div class="acard-preview">El carismático escocés que saltó a la fama con Trainspotting. En Moulin Rouge demostró que también podía cantar, actuando con una energía arrolladora.</div>
+        <div class="acard-goto">Ver biografía completa →</div>
+      </button>
+    </div>
+
+    <div style="margin-top:48px;display:flex;gap:10px;flex-wrap:wrap;">
+      <button class="cta" onclick="go('nicole')"><span>Nicole Kidman →</span></button>
+      <button class="cta" style="background:transparent;border:1px solid var(--red);color:var(--red);" onclick="go('ewan')"><span>Ewan McGregor →</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     MAR ADENTRO
+══════════════════════════════════════════ -->
+<div id="p-maradentro" class="page">
+  <div style="padding-top:60px;">
+    <div class="mar-hero">
+      <div>
+        <div style="font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:4px;text-transform:uppercase;color:rgba(201,168,76,.7);margin-bottom:10px;">Alejandro Amenábar · 2004</div>
+        <h1 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,8vw,6rem);letter-spacing:3px;color:var(--white);line-height:.93;">MAR<br>ADENTRO</h1>
+      </div>
+    </div>
+  </div>
+  <div class="content" style="padding-top:36px;">
+    <button class="back" onclick="go('espanol')">← Cine Español</button>
+
+    <div class="awards">
+      <div class="award"><span>🏆</span> Oscar · Mejor Película Extranjera 2005</div>
+      <div class="award"><span>🥇</span> 14 Premios Goya</div>
+      <div class="award"><span>🎭</span> Javier Bardem · Mejor Actor</div>
+      <div class="award"><span>🎬</span> Amenábar · Director</div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 260px;gap:44px;margin-bottom:40px;" id="mad-grid">
+      <div>
+        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:1.9rem;letter-spacing:2px;color:var(--white);margin-bottom:18px;">Sinopsis</h2>
+        <p style="font-size:1rem;line-height:1.9;color:rgba(245,240,232,.78);font-weight:300;margin-bottom:16px;">
+          <strong>Ramón Sampedro</strong> lleva 28 años postrado en una cama, tetrapléjico desde los 25 años a causa de un accidente al tirarse al mar. Su único deseo ha sido poder morir dignamente, pero la ley española se lo impide.
+        </p>
+        <p style="font-size:1rem;line-height:1.9;color:rgba(245,240,232,.78);font-weight:300;margin-bottom:16px;">
+          Dos mujeres entran en su vida: <strong>Julia</strong>, una abogada que lucha por su derecho a morir, y <strong>Rosa</strong>, una mujer del pueblo que cree poder hacer que Ramón quiera vivir.
+        </p>
+        <p style="font-size:1rem;line-height:1.9;color:rgba(245,240,232,.78);font-weight:300;">
+          El film fue visto por millones de espectadores y desencadenó un debate ético y social sobre la eutanasia que aún hoy permanece vigente.
+        </p>
+      </div>
+      <div>
+        <img src="mar_a_dentro.jpg" alt="Mar Adentro póster" style="width:100%;aspect-ratio:3/4;object-fit:cover;border:1px solid #2a2a3a;margin-bottom:16px;display:block;" onerror="this.style.display='none';">
+        <div class="ibox" style="margin:0;">
+          <div class="ibox-label">Datos</div>
+          <div class="mrow"><span class="mlabel">Estreno España</span><span class="mval">Sep 2004</span></div>
+          <div class="mrow"><span class="mlabel">Oscar</span><span class="mval">Feb 2005</span></div>
+          <div class="mrow"><span class="mlabel">Duración</span><span class="mval">125 min</span></div>
+          <div class="mrow" style="border-bottom:none;"><span class="mlabel">Género</span><span class="mval">Drama biográfico</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="quote">
+      <div class="q-text">"La vida es un derecho, no una obligación."</div>
+      <div class="q-who">— Ramón Sampedro, Mar Adentro</div>
+    </div>
+
+    <div style="margin-top:44px;">
+      <h3 style="font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:2px;color:var(--white);margin-bottom:20px;">Premios destacados</h3>
+      <div class="filmo">
+        <div class="fi"><span class="fi-y">2005</span><span class="fi-t">Oscar · Mejor Película Extranjera</span><span class="fi-r">Academy Awards</span></div>
+        <div class="fi"><span class="fi-y">2005</span><span class="fi-t">14 Premios Goya</span><span class="fi-r">Academia Española</span></div>
+        <div class="fi"><span class="fi-y">2004</span><span class="fi-t">León de Plata · Mejor Director</span><span class="fi-r">Festival de Venecia</span></div>
+        <div class="fi"><span class="fi-y">2004</span><span class="fi-t">Copa Volpi · Mejor Actor (Bardem)</span><span class="fi-r">Festival de Venecia</span></div>
+      </div>
+    </div>
+
+    <div style="margin-top:44px;display:flex;gap:10px;flex-wrap:wrap;">
+      <button class="cta" onclick="go('espanol')"><span>← Cine Español</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     NICOLE KIDMAN
+══════════════════════════════════════════ -->
+<div id="p-nicole" class="page">
+  <div class="content">
+    <button class="back" id="back-nicole" onclick="backFromBio()">← Volver</button>
+    <div class="pg-header">
+      <div class="pg-eyebrow">Biografía</div>
+      <h1 class="pg-title">Nicole<br><em>Kidman</em></h1>
+    </div>
+    <div class="bio-wrap">
+      <div class="bio-text">
+        <p>Aunque nació en <strong>Hawaii</strong>, Nicole Kidman creció en <strong>Sydney</strong>, en el seno de una de las familias más ricas de Australia. Su interés por el baile y la interpretación surgió siendo aún niña. Pronto inició sus estudios de arte dramático y debutó como actriz en el canal de televisión Disney.</p>
+        <p>En el cine se inició con pequeños papeles en películas australianas, algo que compaginaba con su participación en la serie de televisión <em>Vietnam</em>. Su trabajo le valió el premio como <strong>mejor actriz del año en Australia en 1989</strong> y llamó la atención de un agente norteamericano que le abrió las puertas de Hollywood con <em>Calma Total</em>.</p>
+
+        <h3>El Salto a Hollywood</h3>
+        <p>En su filmografía destacan títulos como <em>Retrato de una Dama</em> y <em>Ojos Bien Cerrados</em> junto a Tom Cruise. Sus papeles más sonados los debe a <span class="ilink" onclick="go('moulin')">Moulin Rouge</span> y <em>Las Horas</em>, que le valió el <strong>Oscar a la Mejor Actriz en 2003</strong>. En 2002 repitió nominación a los Oscar por <span class="ilink" onclick="go('moulin')">Moulin Rouge</span>, donde interpreta a <strong>Satine</strong>, cortesana que se enamora de un joven escritor en el París de 1900.</p>
+        <p>Nicole Kidman es uno de los iconos más reconocibles del cine internacional de las últimas décadas, conocida por su versatilidad y su disposición a asumir papeles de gran exigencia dramática.</p>
+
+        <div class="filmo">
+          <div class="filmo-title">Filmografía</div>
+          <div class="fi"><span class="fi-y">1989</span><span class="fi-t">Calma Total</span><span class="fi-r">Protagonista</span></div>
+          <div class="fi"><span class="fi-y">1996</span><span class="fi-t">Retrato de una Dama</span><span class="fi-r">Isabel Archer</span></div>
+          <div class="fi"><span class="fi-y">1999</span><span class="fi-t">Ojos Bien Cerrados</span><span class="fi-r">Alice Harford</span></div>
+          <div class="fi" style="cursor:pointer;" onclick="go('moulin')"><span class="fi-y">2001</span><span class="fi-t">Moulin Rouge ✦</span><span class="fi-r">Satine</span></div>
+          <div class="fi"><span class="fi-y">2002</span><span class="fi-t">Las Horas — Oscar ✦</span><span class="fi-r">Virginia Woolf</span></div>
+          <div class="fi"><span class="fi-y">2003</span><span class="fi-t">Cold Mountain</span><span class="fi-r">Ada Monroe</span></div>
+        </div>
+      </div>
+      <div class="bio-side">
+        <div class="portrait"><img src="nicole_mouline.jpg" alt="Nicole Kidman en Moulin Rouge" onerror="this.parentElement.innerHTML='🌹';"></div>
+        <div class="meta-box">
+          <div class="mrow"><span class="mlabel">Nombre</span><span class="mval">Nicole Mary Kidman</span></div>
+          <div class="mrow"><span class="mlabel">Nacimiento</span><span class="mval">20 Jun 1967, Hawaii</span></div>
+          <div class="mrow"><span class="mlabel">Origen</span><span class="mval">Australiana</span></div>
+          <div class="mrow"><span class="mlabel">Oscar</span><span class="mval">2003 · Las Horas</span></div>
+          <div class="mrow"><span class="mlabel">Moulin Rouge</span><span class="mval" style="cursor:pointer;color:var(--gold);" onclick="go('moulin')">Ver película →</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     EWAN McGREGOR
+══════════════════════════════════════════ -->
+<div id="p-ewan" class="page">
+  <div class="content">
+    <button class="back" id="back-ewan" onclick="backFromBio()">← Volver</button>
+    <div class="pg-header">
+      <div class="pg-eyebrow">Biografía</div>
+      <h1 class="pg-title">Ewan<br><em>McGregor</em></h1>
+    </div>
+    <div class="bio-wrap">
+      <div class="bio-text">
+        <p><strong>Ewan Gordon McGregor</strong> nació en <strong>Crieff</strong>, un pequeño pueblo de Escocia, el <strong>31 de marzo de 1971</strong>. A los 16 años dejó la escuela decidido a estudiar actuación en el Perth Repertory Theatre. Estudió drama en Kirkcaldy, Fife, donde terminó con un Certificado Superior en Arte Dramático.</p>
+        <p>En <strong>1989</strong> ingresó a la escuela de música y drama <em>Guildhall</em> de Londres. Estuvo allí tres años hasta que abandonó para actuar en su primera película, <em>Lipstick on your collar</em>.</p>
+
+        <h3>El Salto a la Fama: Trainspotting</h3>
+        <p>Saltó a la fama con <strong>Trainspotting</strong>, una de las obras más influyentes del cine británico de los 90. En 1994 protagonizó <em>Shallow Grave</em>. En 1996 estuvo en <em>Emma</em>, junto a Gwyneth Paltrow y Toni Collette. Ese mismo verano, se casó con la diseñadora de producción <strong>Eve Mavrakis</strong>. En febrero de 1996 tuvieron una hija, <strong>Clara Mathilde</strong>.</p>
+
+        <h3>Star Wars y el Estrellato Global</h3>
+        <p>En <strong>1999</strong> llegó a los cines <em>Star Wars Episode I: The Phantom Menace</em>, donde interpretó al joven <strong>Obi-Wan Kenobi</strong>, papel que le dio dimensión global. Dos años después triunfaría en <span class="ilink" onclick="go('moulin')">Moulin Rouge</span> junto a <span class="ilink" onclick="go('nicole')">Nicole Kidman</span>, interpretando al joven escritor Christian.</p>
+
+        <div class="filmo">
+          <div class="filmo-title">Filmografía</div>
+          <div class="fi"><span class="fi-y">1994</span><span class="fi-t">Shallow Grave</span><span class="fi-r">Alex</span></div>
+          <div class="fi"><span class="fi-y">1996</span><span class="fi-t">Trainspotting ✦</span><span class="fi-r">Mark Renton</span></div>
+          <div class="fi"><span class="fi-y">1996</span><span class="fi-t">Emma</span><span class="fi-r">Frank Churchill</span></div>
+          <div class="fi"><span class="fi-y">1999</span><span class="fi-t">Star Wars Ep. I</span><span class="fi-r">Obi-Wan Kenobi</span></div>
+          <div class="fi" style="cursor:pointer;" onclick="go('moulin')"><span class="fi-y">2001</span><span class="fi-t">Moulin Rouge ✦</span><span class="fi-r">Christian</span></div>
+          <div class="fi"><span class="fi-y">2003</span><span class="fi-t">Star Wars Ep. II & III</span><span class="fi-r">Obi-Wan Kenobi</span></div>
+        </div>
+      </div>
+      <div class="bio-side">
+        <div class="portrait"><img src="ewan_mouline.jpg" alt="Ewan McGregor en Moulin Rouge" onerror="this.parentElement.innerHTML='🏴󠁧󠁢󠁳󠁣󠁴󠁿';"></div>
+        <div class="meta-box">
+          <div class="mrow"><span class="mlabel">Nombre</span><span class="mval">Ewan Gordon McGregor</span></div>
+          <div class="mrow"><span class="mlabel">Nacimiento</span><span class="mval">31 Mar 1971, Crieff</span></div>
+          <div class="mrow"><span class="mlabel">Origen</span><span class="mval">Escocés</span></div>
+          <div class="mrow"><span class="mlabel">Formación</span><span class="mval">Guildhall, Londres</span></div>
+          <div class="mrow"><span class="mlabel">Moulin Rouge</span><span class="mval" style="cursor:pointer;color:var(--gold);" onclick="go('moulin')">Ver película →</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<!-- MODALES YOUTUBE (fuera de .page para que no hereden display:none) -->
+<div id="modal-vdma" class="yt-modal" onclick="closeVideo('vdma')">
+  <div class="yt-box" onclick="event.stopPropagation()">
+    <button class="yt-close" onclick="closeVideo('vdma')">&#x2715;</button>
+    <div class="yt-title">Venganza del M&#225;s All&#225;</div>
+    <div class="yt-frame">
+      <iframe id="iframe-vdma" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    </div>
+  </div>
+</div>
+<div id="modal-lvduc" class="yt-modal" onclick="closeVideo('lvduc')">
+  <div class="yt-box" onclick="event.stopPropagation()">
+    <button class="yt-close" onclick="closeVideo('lvduc')">&#x2715;</button>
+    <div class="yt-title">La Vida de un Celiaco</div>
+    <div class="yt-frame">
+      <iframe id="iframe-lvduc" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    </div>
+  </div>
+</div>
+<!-- ══════ JS ══════ -->
+<script>
+const pages = ['home','historia','espanol','moulin','maradentro','nicole','ewan'];
+let history_stack = ['home'];
+
+function go(id) {
+  // Save current for back navigation
+  const current = pages.find(p => document.getElementById('p-'+p)?.classList.contains('active'));
+  if (current && current !== id) history_stack.push(current);
+  if (history_stack.length > 10) history_stack.shift();
+
+  // Hide all pages
+  pages.forEach(p => {
+    const el = document.getElementById('p-'+p);
+    if (el) el.classList.remove('active');
+  });
+
+  // Deactivate nav
+  document.querySelectorAll('.nav-links a, .nav-mobile-menu a').forEach(a => a.classList.remove('active'));
+
+  // Show target page
+  const target = document.getElementById('p-' + id);
+  if (!target) return;
+  target.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'instant' });
+
+  // Activate nav link
+  const navEl = document.getElementById('n-' + id);
+  if (navEl) navEl.classList.add('active');
+
+  // Side effects
+  if (id === 'historia') setTimeout(animTimeline, 80);
+  if (id === 'moulin') buildStars();
+  if (id === 'maradentro') fixMadGrid();
+}
+
+function backFromBio() {
+  // Pop last in stack that isn't the current page
+  const prev = history_stack.pop() || 'home';
+  go(prev);
+}
+
+// ── MOBILE MENU ──
+function toggleMenu() {
+  document.getElementById('mobile-menu').classList.toggle('open');
+}
+document.addEventListener('click', e => {
+  const menu = document.getElementById('mobile-menu');
+  const btn = document.querySelector('.nav-mobile-btn');
+  if (menu.classList.contains('open') && !menu.contains(e.target) && !btn.contains(e.target)) {
+    menu.classList.remove('open');
+  }
+});
+
+// ── TIMELINE ──
+function animTimeline() {
+  const entries = document.querySelectorAll('.tentry');
+  const io = new IntersectionObserver(obs => {
+    obs.forEach(e => { if (e.isIntersecting) e.target.classList.add('vis'); });
+  }, { threshold: 0.12 });
+  entries.forEach(e => {
+    const r = e.getBoundingClientRect();
+    if (r.top < window.innerHeight * 0.95) e.classList.add('vis');
+    else io.observe(e);
+  });
+}
+
+// ── MOULIN STARS ──
+function buildStars() {
+  const c = document.getElementById('moulin-stars');
+  if (!c || c.children.length) return;
+  for (let i = 0; i < 70; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    s.style.cssText = `left:${Math.random()*100}%;top:${Math.random()*100}%;animation-delay:${(Math.random()*3).toFixed(2)}s;animation-duration:${(2+Math.random()*3).toFixed(2)}s;`;
+    const sz = 1 + Math.random() * 2;
+    s.style.width = s.style.height = sz + 'px';
+    c.appendChild(s);
+  }
+}
+
+// ── MAR ADENTRO GRID ──
+function fixMadGrid() {
+  const g = document.getElementById('mad-grid');
+  if (g) g.style.gridTemplateColumns = window.innerWidth < 680 ? '1fr' : '1fr 260px';
+}
+window.addEventListener('resize', fixMadGrid);
+
+// ── FORM ──
+function doSubmit() {
+  const name = document.getElementById('fn').value.trim();
+  if (!name) { alert('Por favor introduce tu nombre.'); return; }
+  document.querySelector('.submit').style.display = 'none';
+  document.getElementById('submit-ok').style.display = 'block';
+  document.getElementById('submit-ok').textContent = `✓ ¡Bienvenido/a, ${name}! Tu inscripción ha sido recibida.`;
+}
+
+
+// ── YOUTUBE MODALS ──
+const ytUrls = {
+  vdma:  'https://www.youtube.com/embed/Fq3qdyBvPjk?si=qX4EdD3CLgsJETSM&autoplay=1',
+  lvduc: 'https://www.youtube.com/embed/OGjh3sG8ObE?si=uwCS3ODsVG7ucXCC&autoplay=1'
+};
+function openVideo(id) {
+  document.getElementById('iframe-' + id).src = ytUrls[id];
+  document.getElementById('modal-' + id).classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeVideo(id) {
+  document.getElementById('modal-' + id).classList.remove('open');
+  document.getElementById('iframe-' + id).src = '';
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    ['vdma','lvduc'].forEach(id => {
+      if (document.getElementById('modal-' + id).classList.contains('open')) closeVideo(id);
+    });
+  }
+});
+
+// ── INIT ──
+document.addEventListener('DOMContentLoaded', () => {
+  buildStars();
+  fixMadGrid();
+});
+</script>
+</body>
+</html>
