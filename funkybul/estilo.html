@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estilo | Pro-visión</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root { --primary: #FF6B00; --secondary: #FFD700; --dark: #0a0a0a; --darker: #000000; }
+        body { font-family: 'Montserrat', sans-serif; background: var(--darker); color: #ffffff; line-height: 1.8; }
+        .header { background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%); padding: 1.5rem 2rem; border-bottom: 2px solid rgba(255, 107, 0, 0.3); position: sticky; top: 0; z-index: 100; }
+        .header-content { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+        .logo-small { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--primary); text-decoration: none; letter-spacing: 0.1em; }
+        .nav-top { display: flex; gap: 2rem; flex-wrap: wrap; }
+        .nav-link { color: rgba(255, 255, 255, 0.7); text-decoration: none; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.1em; transition: all 0.3s ease; position: relative; font-weight: 500; }
+        .nav-link::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 2px; background: var(--primary); transition: width 0.3s ease; }
+        .nav-link:hover { color: var(--primary); }
+        .nav-link:hover::after { width: 100%; }
+        .nav-link.active { color: var(--primary); }
+        .hero-section { padding: 6rem 2rem 4rem; background: linear-gradient(135deg, var(--dark) 0%, var(--darker) 100%); }
+        .hero-content { max-width: 1200px; margin: 0 auto; text-align: center; }
+        .page-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(3rem, 10vw, 6rem); color: var(--primary); margin-bottom: 1rem; letter-spacing: 0.05em; }
+        .page-subtitle { font-size: 1.2rem; color: var(--secondary); font-weight: 300; letter-spacing: 0.3em; text-transform: uppercase; }
+        .audio-section { max-width: 800px; margin: 0 auto; padding: 4rem 2rem; text-align: center; }
+        .audio-container { background: rgba(255, 107, 0, 0.1); border: 2px solid rgba(255, 107, 0, 0.3); border-radius: 15px; padding: 3rem 2rem; }
+        .audio-title { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--secondary); margin-bottom: 2rem; letter-spacing: 0.1em; }
+        audio { width: 100%; max-width: 500px; margin: 0 auto; filter: sepia(100%) saturate(300%) brightness(70%) hue-rotate(350deg); }
+        .content-text { color: rgba(255, 255, 255, 0.8); font-size: 1.1rem; line-height: 1.8; margin-bottom: 2rem; }
+        .bottom-nav { background: var(--dark); padding: 3rem 2rem; border-top: 2px solid rgba(255, 107, 0, 0.3); }
+        .bottom-nav-content { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; }
+        .nav-btn { padding: 1.2rem 1.5rem; background: rgba(255, 107, 0, 0.05); border: 2px solid rgba(255, 107, 0, 0.3); border-radius: 10px; color: #ffffff; font-weight: 600; text-decoration: none; text-transform: uppercase; letter-spacing: 0.1em; transition: all 0.3s ease; text-align: center; font-size: 0.9rem; }
+        .nav-btn:hover { background: linear-gradient(135deg, var(--primary), var(--secondary)); transform: translateY(-3px); box-shadow: 0 10px 30px rgba(255, 107, 0, 0.3); }
+        @media (max-width: 768px) { .header-content { justify-content: center; text-align: center; } .nav-top { gap: 1rem; } }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <a href="index.html" class="logo-small">PRO-VISIÓN</a>
+            <nav class="nav-top">
+                <a href="index.html" class="nav-link">Inicio</a>
+                <a href="historia.html" class="nav-link">Historia</a>
+                <a href="biografia.html" class="nav-link">Biografía</a>
+                <a href="estilo.html" class="nav-link active">Estilo</a>
+                <a href="albun.html" class="nav-link">Álbum</a>
+                <a href="instrumentos.html" class="nav-link">Instrumentos</a>
+                <a href="formulario.html" class="nav-link">Contacto</a>
+            </nav>
+        </div>
+    </header>
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1 class="page-title">Nuestro Estilo</h1>
+            <p class="page-subtitle">Música Funky Cristiana</p>
+        </div>
+    </section>
+    <section class="audio-section">
+        <div class="audio-container">
+            <h2 class="audio-title">Escucha nuestro sonido</h2>
+            <p class="content-text">Una fusión única de funk, gospel y música cristiana contemporánea. Nuestro estilo combina ritmos contagiosos con mensajes de fe y esperanza.</p>
+            <audio controls>
+                <source src="../funkybul/notedejes.mp3" type="audio/mpeg">
+                Tu navegador no soporta el elemento de audio.
+            </audio>
+        </div>
+    </section>
+    <nav class="bottom-nav">
+        <div class="bottom-nav-content">
+            <a href="historia.html" class="nav-btn">Historia</a>
+            <a href="biografia.html" class="nav-btn">Biografía</a>
+            <a href="albun.html" class="nav-btn">Álbum</a>
+            <a href="index.html" class="nav-btn">Inicio</a>
+        </div>
+    </nav>
+</body>
+</html>

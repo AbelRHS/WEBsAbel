@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biografía | Pro-visión</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #FF6B00;
+            --secondary: #FFD700;
+            --dark: #0a0a0a;
+            --darker: #000000;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--darker);
+            color: #ffffff;
+            line-height: 1.8;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+            padding: 1.5rem 2rem;
+            border-bottom: 2px solid rgba(255, 107, 0, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo-small {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            color: var(--primary);
+            text-decoration: none;
+            letter-spacing: 0.1em;
+        }
+
+        .nav-top {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            transition: all 0.3s ease;
+            position: relative;
+            font-weight: 500;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--primary);
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .nav-link.active {
+            color: var(--primary);
+        }
+
+        .hero-section {
+            padding: 6rem 2rem 4rem;
+            background: linear-gradient(135deg, var(--dark) 0%, var(--darker) 100%);
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .page-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(3rem, 10vw, 6rem);
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.05em;
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: var(--secondary);
+            font-weight: 300;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+        }
+
+        .members-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .member-card {
+            background: linear-gradient(135deg, rgba(255, 107, 0, 0.1) 0%, rgba(0, 0, 0, 0.5) 100%);
+            border: 2px solid rgba(255, 107, 0, 0.3);
+            border-radius: 15px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .member-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--secondary);
+            box-shadow: 0 20px 40px rgba(255, 107, 0, 0.3);
+        }
+
+        .member-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .member-name {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.1em;
+        }
+
+        .member-role {
+            color: var(--primary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .member-bio {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .bottom-nav {
+            background: var(--dark);
+            padding: 3rem 2rem;
+            border-top: 2px solid rgba(255, 107, 0, 0.3);
+        }
+
+        .bottom-nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .nav-btn {
+            padding: 1.2rem 1.5rem;
+            background: rgba(255, 107, 0, 0.05);
+            border: 2px solid rgba(255, 107, 0, 0.3);
+            border-radius: 10px;
+            color: #ffffff;
+            font-weight: 600;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .nav-btn:hover {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(255, 107, 0, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                justify-content: center;
+                text-align: center;
+            }
+
+            .nav-top {
+                gap: 1rem;
+            }
+
+            .members-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <a href="index.html" class="logo-small">PRO-VISIÓN</a>
+            <nav class="nav-top">
+                <a href="index.html" class="nav-link">Inicio</a>
+                <a href="historia.html" class="nav-link">Historia</a>
+                <a href="biografia.html" class="nav-link active">Biografía</a>
+                <a href="estilo.html" class="nav-link">Estilo</a>
+                <a href="albun.html" class="nav-link">Álbum</a>
+                <a href="instrumentos.html" class="nav-link">Instrumentos</a>
+                <a href="formulario.html" class="nav-link">Contacto</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1 class="page-title">Los Miembros</h1>
+            <p class="page-subtitle">Conoce al equipo</p>
+        </div>
+    </section>
+
+    <section class="members-grid">
+        <div class="member-card">
+            <div class="member-icon">🎤</div>
+            <h2 class="member-name">Dario</h2>
+            <p class="member-role">Voz principal & Guitarras</p>
+            <p class="member-bio">Walter Dario Benitez, nacido en Argentina el 7 de junio de 1984. Llegó a España con 17 años como misionero. Toca batería, teclado y guitarra. Su pasión por la música nació desde pequeño.</p>
+        </div>
+
+        <div class="member-card">
+            <div class="member-icon">🎸</div>
+            <h2 class="member-name">David</h2>
+            <p class="member-role">Guitarra Eléctrica</p>
+            <p class="member-bio">David Alonso aporta su talento con la guitarra eléctrica, añadiendo energía y potencia al sonido del grupo.</p>
+        </div>
+
+        <div class="member-card">
+            <div class="member-icon">🎹</div>
+            <h2 class="member-name">Iker</h2>
+            <p class="member-role">Teclados</p>
+            <p class="member-bio">Desde Ponferrada, Iker es una fiera en los teclados, aportando texturas y melodías únicas al grupo.</p>
+        </div>
+
+        <div class="member-card">
+            <div class="member-icon">🥁</div>
+            <h2 class="member-name">Josué</h2>
+            <p class="member-role">Batería</p>
+            <p class="member-bio">El benjamín del grupo, con un corazón enorme entregado a Dios. Aporta el ritmo y la energía desde la batería.</p>
+        </div>
+
+        <div class="member-card">
+            <div class="member-icon">🎸</div>
+            <h2 class="member-name">Oscar</h2>
+            <p class="member-role">Bajo</p>
+            <p class="member-bio">Uno de los fundadores del grupo junto a Sara y Noemí. La base rítmica y armónica de Pro-visión.</p>
+        </div>
+
+        <div class="member-card">
+            <div class="member-icon">🎵</div>
+            <h2 class="member-name">Sara</h2>
+            <p class="member-role">Coros</p>
+            <p class="member-bio">Fundadora del grupo. Su voz complementa perfectamente las armonías del grupo.</p>
+        </div>
+
+        <div class="member-card">
+            <div class="member-icon">🎶</div>
+            <h2 class="member-name">Noemí</h2>
+            <p class="member-role">Coros</p>
+            <p class="member-bio">También fundadora, aporta su talento vocal creando armonías celestiales.</p>
+        </div>
+    </section>
+
+    <nav class="bottom-nav">
+        <div class="bottom-nav-content">
+            <a href="historia.html" class="nav-btn">Historia</a>
+            <a href="estilo.html" class="nav-btn">Estilo</a>
+            <a href="albun.html" class="nav-btn">Álbum</a>
+            <a href="index.html" class="nav-btn">Inicio</a>
+        </div>
+    </nav>
+</body>
+</html>
