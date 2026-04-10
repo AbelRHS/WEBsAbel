@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Riesgos Laborales en Platós de TV · FOL 2008</title>
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,600;1,300&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --rojo: #e8002d;
+    --amarillo: #ffd700;
+    --negro: #0a0a0a;
+    --gris-oscuro: #111;
+    --gris-medio: #1e1e1e;
+    --gris-claro: #2a2a2a;
+    --texto: #e8e0d5;
+    --texto-dim: #8a7f74;
+    --acento: #ff4d1c;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--negro);
+    color: var(--texto);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── BARRA DE NAVEGACIÓN ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    background: rgba(10,10,10,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(232,0,45,0.25);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+    height: 60px;
+  }
+
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    letter-spacing: 0.15em;
+    color: var(--rojo);
+    cursor: pointer;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 0;
+    list-style: none;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .nav-links::-webkit-scrollbar { display: none; }
+
+  .nav-links a {
+    display: block;
+    padding: 0 0.9rem;
+    height: 60px;
+    line-height: 60px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--texto-dim);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color 0.2s, background 0.2s;
+    border-bottom: 2px solid transparent;
+  }
+
+  .nav-links a:hover, .nav-links a.active {
+    color: var(--rojo);
+    border-bottom-color: var(--rojo);
+  }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px 2rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 60% 50%, rgba(232,0,45,0.08) 0%, transparent 70%),
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 39px,
+        rgba(255,255,255,0.03) 39px,
+        rgba(255,255,255,0.03) 40px
+      ),
+      repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 39px,
+        rgba(255,255,255,0.02) 39px,
+        rgba(255,255,255,0.02) 40px
+      );
+  }
+
+  .hero-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--rojo);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    position: relative;
+  }
+  .hero-tag::before {
+    content: '▶ ';
+    opacity: 0.7;
+  }
+
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3.5rem, 10vw, 9rem);
+    line-height: 0.9;
+    letter-spacing: -0.01em;
+    position: relative;
+    color: var(--texto);
+  }
+
+  h1 span { color: var(--rojo); }
+
+  .hero-sub {
+    margin-top: 2rem;
+    font-size: 1rem;
+    color: var(--texto-dim);
+    max-width: 600px;
+    line-height: 1.7;
+    font-weight: 300;
+    font-style: italic;
+  }
+
+  .hero-credits {
+    margin-top: 3rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    position: relative;
+  }
+
+  .credit-pill {
+    background: var(--gris-medio);
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 0.35rem 0.85rem;
+    border-radius: 100px;
+    font-size: 0.78rem;
+    color: var(--texto-dim);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .credit-pill.highlight {
+    background: rgba(232,0,45,0.12);
+    border-color: rgba(232,0,45,0.3);
+    color: #ff8898;
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--texto-dim);
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    animation: bob 2s ease-in-out infinite;
+  }
+
+  .scroll-hint::after {
+    content: '';
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--rojo), transparent);
+  }
+
+  @keyframes bob {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(6px); }
+  }
+
+  /* ── SECCIONES GENÉRICAS ── */
+  section {
+    padding: 6rem 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--rojo);
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    max-width: 60px;
+    height: 1px;
+    background: var(--rojo);
+    opacity: 0.4;
+  }
+
+  h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    line-height: 1;
+    letter-spacing: 0.02em;
+    color: var(--texto);
+    margin-bottom: 2.5rem;
+  }
+
+  h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    letter-spacing: 0.05em;
+    color: var(--texto);
+    margin-bottom: 1rem;
+  }
+
+  p {
+    color: var(--texto-dim);
+    line-height: 1.8;
+    font-weight: 300;
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+  }
+
+  /* ── SEPARADOR ROJO ── */
+  .divider {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--rojo), transparent);
+    opacity: 0.3;
+    margin: 0;
+  }
+
+  /* ── INTRO ── */
+  #introduccion .intro-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 1rem;
+  }
+
+  @media (max-width: 700px) {
+    #introduccion .intro-grid { grid-template-columns: 1fr; }
+  }
+
+  .intro-card {
+    background: var(--gris-medio);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 4px;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s;
+  }
+
+  .intro-card:hover { border-color: rgba(232,0,45,0.3); }
+
+  .intro-card::before {
+    content: attr(data-num);
+    position: absolute;
+    top: -0.5rem;
+    right: 1.5rem;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 5rem;
+    color: rgba(232,0,45,0.06);
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  .intro-card h3 { font-size: 1.1rem; color: var(--rojo); margin-bottom: 0.75rem; }
+  .intro-card p { font-size: 0.88rem; margin-bottom: 0; }
+
+  /* ── SEÑALIZACIÓN ── */
+  #senalizacion .signals-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  .signal-card {
+    background: var(--gris-medio);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 4px;
+    padding: 1.5rem;
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    transition: transform 0.2s, border-color 0.2s;
+  }
+
+  .signal-card:hover { transform: translateY(-2px); border-color: rgba(255,255,255,0.15); }
+
+  .signal-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 4px;
+  }
+
+  .signal-dot.verde  { background: #22c55e; box-shadow: 0 0 8px rgba(34,197,94,0.5); }
+  .signal-dot.rojo   { background: #e8002d; box-shadow: 0 0 8px rgba(232,0,45,0.5); }
+  .signal-dot.azul   { background: #3b82f6; box-shadow: 0 0 8px rgba(59,130,246,0.5); }
+  .signal-dot.amarillo { background: #ffd700; box-shadow: 0 0 8px rgba(255,215,0,0.5); }
+
+  .signal-card h4 {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--texto);
+    margin-bottom: 0.4rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .signal-card p { font-size: 0.82rem; margin-bottom: 0; }
+
+  /* ── NORMATIVA ── */
+  #normativa .norma-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-top: 1rem;
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .norma-item {
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    gap: 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    transition: background 0.2s;
+    cursor: pointer;
+  }
+
+  .norma-item:last-child { border-bottom: none; }
+  .norma-item:hover { background: rgba(232,0,45,0.05); }
+
+  .norma-num {
+    background: rgba(232,0,45,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--rojo);
+    font-weight: 600;
+    border-right: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .norma-body {
+    padding: 1rem 1.5rem;
+  }
+
+  .norma-body h4 {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--texto);
+    margin-bottom: 0.3rem;
+    letter-spacing: 0.03em;
+  }
+
+  .norma-body .norma-detail {
+    font-size: 0.82rem;
+    color: var(--texto-dim);
+    line-height: 1.6;
+    display: none;
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .norma-item.open .norma-detail { display: block; }
+
+  .norma-body h4::after {
+    content: ' ＋';
+    color: var(--rojo);
+    font-size: 0.75rem;
+    opacity: 0.6;
+  }
+  .norma-item.open .norma-body h4::after { content: ' −'; }
+
+  /* ── PUESTOS DE TRABAJO ── */
+  #puestos .puestos-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .tab-btn {
+    background: var(--gris-medio);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: var(--texto-dim);
+    padding: 0.5rem 1rem;
+    border-radius: 2px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .tab-btn:hover { border-color: var(--rojo); color: var(--texto); }
+  .tab-btn.active { background: var(--rojo); border-color: var(--rojo); color: #fff; }
+
+  .puesto-panel { display: none; }
+  .puesto-panel.active { display: block; }
+
+  .puesto-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    align-items: start;
+  }
+
+  @media (max-width: 700px) {
+    .puesto-layout { grid-template-columns: 1fr; }
+  }
+
+  .puesto-funciones {
+    background: var(--gris-medio);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 4px;
+    padding: 1.75rem;
+  }
+
+  .puesto-riesgos {
+    background: rgba(232,0,45,0.04);
+    border: 1px solid rgba(232,0,45,0.15);
+    border-radius: 4px;
+    padding: 1.75rem;
+  }
+
+  .mini-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--rojo);
+    margin-bottom: 1rem;
+  }
+
+  .riesgo-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: rgba(232,0,45,0.1);
+    border: 1px solid rgba(232,0,45,0.2);
+    color: #ff8898;
+    font-size: 0.75rem;
+    padding: 0.3rem 0.7rem;
+    border-radius: 2px;
+    margin: 0.2rem 0.2rem 0.2rem 0;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .riesgo-row {
+    margin-bottom: 0.5rem;
+  }
+
+  .riesgo-row strong {
+    display: inline-block;
+    font-size: 0.78rem;
+    color: var(--texto);
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+  }
+
+  /* ── CONCLUSIÓN ── */
+  #conclusion .conclu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1rem;
+  }
+
+  .conclu-card {
+    background: var(--gris-medio);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 4px;
+    padding: 2rem;
+    transition: border-color 0.3s;
+    position: relative;
+  }
+
+  .conclu-card:hover { border-color: rgba(232,0,45,0.3); }
+
+  .conclu-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem;
+    letter-spacing: 0.08em;
+    color: var(--rojo);
+    margin-bottom: 0.75rem;
+  }
+
+  .conclu-card p { font-size: 0.88rem; margin-bottom: 0; font-style: italic; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--gris-oscuro);
+    border-top: 1px solid rgba(232,0,45,0.2);
+    padding: 3rem 2rem;
+    text-align: center;
+  }
+
+  footer .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    letter-spacing: 0.15em;
+    color: var(--rojo);
+    margin-bottom: 0.75rem;
+  }
+
+  footer p {
+    font-size: 0.82rem;
+    color: var(--texto-dim);
+    margin-bottom: 0.3rem;
+  }
+
+  /* ── ANIMACIONES DE ENTRADA ── */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── LÍNEA FULLWIDTH ── */
+  .full-divider {
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    height: 1px;
+    background: linear-gradient(90deg, transparent 5%, rgba(232,0,45,0.3) 30%, rgba(232,0,45,0.3) 70%, transparent 95%);
+  }
+</style>
+</head>
+<body>
+
+<!-- NAVEGACIÓN -->
+<nav>
+  <div class="nav-logo" onclick="scrollTo({top:0,behavior:'smooth'})">FOL · PLATÓ 1</div>
+  <ul class="nav-links">
+    <li><a href="#introduccion">Introducción</a></li>
+    <li><a href="#senalizacion">Señalización</a></li>
+    <li><a href="#normativa">Normativa</a></li>
+    <li><a href="#puestos">Puestos</a></li>
+    <li><a href="#conclusion">Conclusión</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-tag">FOL · Formación y Orientación Laboral · 2008</div>
+  <h1>Riesgos<br><span>Laborales</span><br>en Platós</h1>
+  <p class="hero-sub">
+    Aplicación del Real Decreto 486/1997 al Plató 1 del CES.
+    Análisis de seguridad, señalización y riesgos por puesto de trabajo.
+  </p>
+  <div class="hero-credits">
+    <span class="credit-pill">David García</span>
+    <span class="credit-pill">María Gómez</span>
+    <span class="credit-pill">Mariano</span>
+    <span class="credit-pill">Pauliño</span>
+    <span class="credit-pill highlight">Abel Rubio Hidalgo</span>
+    <span class="credit-pill">· CES · 2008</span>
+  </div>
+  <div class="scroll-hint">Scroll</div>
+</div>
+
+<div class="full-divider"></div>
+
+<!-- INTRODUCCIÓN -->
+<section id="introduccion">
+  <div class="section-label fade-in">Real Decreto 486/1997</div>
+  <h2 class="fade-in">Introducción</h2>
+  <p class="fade-in" style="max-width:700px; font-size:1rem; color: var(--texto);">
+    El trabajo consiste en analizar tres aspectos fundamentales de la seguridad laboral en el Plató 1 del CES: la aplicación de la normativa de lugares de trabajo, el análisis de la señalización, y los riesgos específicos de cada puesto.
+  </p>
+
+  <div class="intro-grid" style="margin-top:2.5rem;">
+    <div class="intro-card fade-in" data-num="01">
+      <h3>Parte 1 · Normativa del lugar</h3>
+      <p>Aplicación del Real Decreto 486/1997 al Plató 1: seguridad estructural, suelos, vías de circulación, puertas, escaleras, evacuación e instalaciones eléctricas.</p>
+    </div>
+    <div class="intro-card fade-in" data-num="02">
+      <h3>Parte 2 · Señalización</h3>
+      <p>Análisis de las señales presentes en el edificio CES: colores, ubicación y cumplimiento del Real Decreto 485/1997 sobre señalización de seguridad.</p>
+    </div>
+    <div class="intro-card fade-in" data-num="03">
+      <h3>Parte 3 · Riesgos por puesto</h3>
+      <p>Descripción de funciones y riesgos laborales de cada uno de los profesionales del plató, con códigos de peligro y posibles soluciones.</p>
+    </div>
+    <div class="intro-card fade-in" data-num="04">
+      <h3>Parte 4 · Conclusiones</h3>
+      <p>Valoración individual de cada miembro del equipo sobre lo aprendido en la realización del trabajo y su aplicación futura.</p>
+    </div>
+  </div>
+</section>
+
+<div class="full-divider"></div>
+
+<!-- SEÑALIZACIÓN -->
+<section id="senalizacion">
+  <div class="section-label fade-in">Real Decreto 485/1997</div>
+  <h2 class="fade-in">Señalización</h2>
+  <p class="fade-in" style="max-width:700px; font-size:0.95rem;">
+    El edificio CES cuenta con señales repartidas por sus instalaciones. El color y la ubicación de cada señal determinan su significado y garantizan su visibilidad.
+  </p>
+
+  <div class="signals-grid" style="margin-top:2rem;">
+    <div class="signal-card fade-in">
+      <div class="signal-dot verde"></div>
+      <div>
+        <h4>Salida / Auxilio</h4>
+        <p>Señal de salvamiento. Fondo blanco sobre verde. Colocada encima de puertas clave como la salida principal.</p>
+      </div>
+    </div>
+    <div class="signal-card fade-in">
+      <div class="signal-dot verde"></div>
+      <div>
+        <h4>Salida de Emergencia</h4>
+        <p>Señal verde en pasillos con flecha direccional hacia las salidas de evacuación ante situaciones de incendio u otro percance.</p>
+      </div>
+    </div>
+    <div class="signal-card fade-in">
+      <div class="signal-dot rojo"></div>
+      <div>
+        <h4>Extintor</h4>
+        <p>Señal roja del grupo de lucha contra incendios. Situada justamente encima del extintor para llamar la atención en caso de incendio.</p>
+      </div>
+    </div>
+    <div class="signal-card fade-in">
+      <div class="signal-dot rojo"></div>
+      <div>
+        <h4>Material contra Incendios</h4>
+        <p>Facilita la localización de instalaciones de protección de emergencia. Ayuda a los trabajadores a orientarse rápidamente.</p>
+      </div>
+    </div>
+    <div class="signal-card fade-in">
+      <div class="signal-dot rojo"></div>
+      <div>
+        <h4>Luz Roja de Plató</h4>
+        <p>Señal de prohibición. Cuando la luz está encendida indica que hay grabación en curso y nadie puede entrar al plató.</p>
+      </div>
+    </div>
+    <div class="signal-card fade-in">
+      <div class="signal-dot rojo"></div>
+      <div>
+        <h4>Prohibición de Fumar</h4>
+        <p>Señal de prohibición general. Presente en múltiples zonas del edificio CES para prevenir incendios y proteger la salud.</p>
+      </div>
+    </div>
+    <div class="signal-card fade-in">
+      <div class="signal-dot amarillo"></div>
+      <div>
+        <h4>Atención / Advertencia</h4>
+        <p>Señal de advertencia de peligro. Fondo amarillo con símbolo negro. Indica zonas de riesgo potencial dentro de las instalaciones.</p>
+      </div>
+    </div>
+    <div class="signal-card fade-in">
+      <div class="signal-dot azul"></div>
+      <div>
+        <h4>Obligación / Información</h4>
+        <p>Señales de información y obligación colocadas en zonas estratégicas para indicar equipos de protección o conductas requeridas.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="full-divider"></div>
+
+<!-- NORMATIVA -->
+<section id="normativa">
+  <div class="section-label fade-in">RD 486/1997 · Plató 1</div>
+  <h2 class="fade-in">Análisis de la Normativa</h2>
+  <p class="fade-in" style="max-width:700px;">
+    Evaluación punto por punto del cumplimiento del Real Decreto 486/1997 en las instalaciones del Plató 1. Pulsa sobre cada apartado para ampliar.
+  </p>
+
+  <div class="norma-list fade-in" style="margin-top:2rem;">
+    <div class="norma-item" onclick="this.classList.toggle('open')">
+      <div class="norma-num">01</div>
+      <div class="norma-body">
+        <h4>Seguridad Estructural</h4>
+        <div class="norma-detail">El edificio posee estructura y solidez adecuadas. Escaleras y practicable tienen la resistencia necesaria para las cargas de trabajo. Una de las escaleras presenta problemas de estabilidad. Todos los elementos de sujeción garantizan estabilidad suficiente.</div>
+      </div>
+    </div>
+    <div class="norma-item" onclick="this.classList.toggle('open')">
+      <div class="norma-num">02</div>
+      <div class="norma-body">
+        <h4>Espacios de Trabajo y Zonas Peligrosas</h4>
+        <div class="norma-detail">El plató dispone del espacio suficiente para el número habitual de trabajadores (máx. 30 alumnos). Los espacios permiten moverse con seguridad alrededor de los equipos técnicos y decorados.</div>
+      </div>
+    </div>
+    <div class="norma-item" onclick="this.classList.toggle('open')">
+      <div class="norma-num">03</div>
+      <div class="norma-body">
+        <h4>Suelos, Aberturas y Desniveles</h4>
+        <div class="norma-detail">Los suelos son fijos, estables y no resbaladizos con el calzado adecuado. No existen pendientes peligrosas. Hay una delgada línea que separa la mitad del plató a nivel del suelo que puede suponer un riesgo para un cámara en movimiento si no va mirando al suelo.</div>
+      </div>
+    </div>
+    <div class="norma-item" onclick="this.classList.toggle('open')">
+      <div class="norma-num">04</div>
+      <div class="norma-body">
+        <h4>Tabiques, Ventanas y Vanos</h4>
+        <div class="norma-detail">No existen tabiques transparentes ni acristalados en el plató 1. No hay riesgo de confusión entre cristal y paso libre. Las operaciones de apertura y cierre de ventanas se realizan de forma segura.</div>
+      </div>
+    </div>
+    <div class="norma-item" onclick="this.classList.toggle('open')">
+      <div class="norma-num">05</div>
+      <div class="norma-body">
+        <h4>Vías de Circulación</h4>
+        <div class="norma-detail">Los pasillos interiores permiten la circulación segura de peatones. La anchura de puertas y pasillos supera los 80 cm reglamentarios. La subida y bajada de material pesado se realiza a través del montacargas situado detrás de recepción. No se cumplen completamente los puntos 4 y 5 del apartado.</div>
+      </div>
+    </div>
+    <div class="norma-item" onclick="this.classList.toggle('open')">
+      <div class="norma-num">06</div>
+      <div class="norma-body">
+        <h4>Puertas y Portones</h4>
+        <div class="norma-detail">No existen puertas transparentes, correderas ni que se abran hacia arriba. Todas las puertas se abren sobre descansillos. Los portones de vehículos disponen de puerta más pequeña para peatones, permitiendo un uso seguro simultáneo.</div>
+      </div>
+    </div>
+    <div class="norma-item" onclick="this.classList.toggle('open')">
+      <div class="norma-num">07–08</div>
+      <div class="norma-body">
+        <h4>Escaleras Fijas y Escalas</h4>
+        <div class="norma-detail">No existen rampas ni escaleras fijas en el plató 1. El practicable actúa como plataforma de trabajo con escalones y superficie antideslizantes e intersticios de 8 mm. No aplican escalas fijas en este espacio.</div>
+      </div>
+    </div>
+    <div class="norma-item" onclick="this.classList.toggle('open')">
+      <div class="norma-num">09</div>
+      <div class="norma-body">
+        <h4>Escalera de Mano</h4>
+        <div class="norma-detail">Se dispone de una escalera de tijera y tres escaleras de mano que reúnen los requisitos mínimos de resistencia y puntos de apoyo. Las escaleras de tijera poseen elementos de seguridad que impiden su apertura durante el uso. Deben utilizarse siguiendo las indicaciones del fabricante.</div>
+      </div>
+    </div>
+    <div class="norma-item" onclick="this.classList.toggle('open')">
+      <div class="norma-num">10</div>
+      <div class="norma-body">
+        <h4>Vías y Salidas de Evacuación</h4>
+        <div class="norma-detail">El plató cuenta con una salida de rápido acceso hacia recepción. Para un máximo de 30 personas y dado el tamaño de la sala, la evacuación puede realizarse de manera eficaz. Existe un portón adicional que abre hacia el exterior. La salida de emergencia está conectada a la alarma de incendios y correctamente señalizada.</div>
+      </div>
+    </div>
+    <div class="norma-item" onclick="this.classList.toggle('open')">
+      <div class="norma-num">11</div>
+      <div class="norma-body">
+        <h4>Protección Contra Incendios</h4>
+        <div class="norma-detail">Las instalaciones cuentan con detectores de incendio y sistemas de alarma. Los extintores se encuentran en el exterior del plató, correctamente señalizados y etiquetados. La salida de emergencia está conectada a la alarma de incendios. Los dispositivos no automáticos son de fácil acceso y utilización.</div>
+      </div>
+    </div>
+    <div class="norma-item" onclick="this.classList.toggle('open')">
+      <div class="norma-num">12</div>
+      <div class="norma-body">
+        <h4>Instalaciones Eléctricas</h4>
+        <div class="norma-detail">Las instalaciones eléctricas no suponen una fuente de peligro para los trabajadores. Se aplican las normas específicas de seguridad eléctrica. El técnico electricista es responsable del mantenimiento y la seguridad de todas las instalaciones eléctricas del plató.</div>
+      </div>
+    </div>
+    <div class="norma-item" onclick="this.classList.toggle('open')">
+      <div class="norma-num">13</div>
+      <div class="norma-body">
+        <h4>Accesibilidad para Personas con Discapacidad</h4>
+        <div class="norma-detail">El plató dispone de montacargas y accesos adaptados que facilitan el trabajo a personas con movilidad reducida. Se contemplan las necesidades de accesibilidad en la distribución de espacios.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="full-divider"></div>
+
+<!-- PUESTOS DE TRABAJO -->
+<section id="puestos">
+  <div class="section-label fade-in">Riesgo Laboral II</div>
+  <h2 class="fade-in">Puestos de Trabajo</h2>
+  <p class="fade-in" style="max-width:700px;">
+    Funciones y análisis de riesgos laborales de cada uno de los profesionales que trabajan en un plató de televisión.
+  </p>
+
+  <div class="puestos-tabs fade-in">
+    <button class="tab-btn active" onclick="showTab('camara')">Op. Cámara</button>
+    <button class="tab-btn" onclick="showTab('ayucam')">Ayud. Cámara</button>
+    <button class="tab-btn" onclick="showTab('iluminador')">Iluminador</button>
+    <button class="tab-btn" onclick="showTab('sonido')">Op. Sonido</button>
+    <button class="tab-btn" onclick="showTab('realizadora')">Realizadora</button>
+    <button class="tab-btn" onclick="showTab('ayurea')">Ayud. Realización</button>
+    <button class="tab-btn" onclick="showTab('regidor')">Regidor</button>
+    <button class="tab-btn" onclick="showTab('decorador')">Decorador</button>
+    <button class="tab-btn" onclick="showTab('presentador')">Presentador</button>
+    <button class="tab-btn" onclick="showTab('maquillador')">Maquillador</button>
+    <button class="tab-btn" onclick="showTab('electricista')">Electricista</button>
+  </div>
+
+  <!-- OPERADOR DE CÁMARA -->
+  <div class="puesto-panel active" id="panel-camara">
+    <div class="puesto-layout">
+      <div class="puesto-funciones">
+        <div class="mini-label">Funciones</div>
+        <h3>Operador de Cámara</h3>
+        <p>Profesional titulado o con experiencia contrastada que posee amplios conocimientos teóricos y prácticos para el manejo de grandes y sofisticados equipos de grabación. Además de los conocimientos técnicos, debe añadir el talento artístico necesario para recrear con ángulos e iluminación la estética adecuada para cada producción.</p>
+      </div>
+      <div class="puesto-riesgos">
+        <div class="mini-label">Riesgos identificados</div>
+        <div class="riesgo-row"><strong>01 · Caídas a distinto nivel</strong><br><span class="riesgo-tag">Media</span><span class="riesgo-tag">Importante</span> Practicables, escaleras</div>
+        <div class="riesgo-row"><strong>02 · Caídas al mismo nivel</strong><br><span class="riesgo-tag">Baja</span> Cables, suelos resbaladizos</div>
+        <div class="riesgo-row"><strong>03 · Caída de objetos</strong><br><span class="riesgo-tag">Media</span><span class="riesgo-tag">Importante</span> Focos, decorados</div>
+        <div class="riesgo-row"><strong>09 · Golpes con herramientas</strong><br><span class="riesgo-tag">Baja</span> Equipos de cámara</div>
+        <div class="riesgo-row"><strong>16 · Contacto eléctrico</strong><br><span class="riesgo-tag">Alta</span><span class="riesgo-tag" style="background:rgba(232,0,45,0.25)">Intolerable</span> Cables en mal estado</div>
+        <p style="font-size:0.8rem; margin-top:1rem;">Todos los elementos para trabajar en altura deben estar en perfecto estado. Uso obligatorio de EPIs.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- AYUDANTE DE CÁMARA -->
+  <div class="puesto-panel" id="panel-ayucam">
+    <div class="puesto-layout">
+      <div class="puesto-funciones">
+        <div class="mini-label">Funciones</div>
+        <h3>Ayudante de Cámara</h3>
+        <p>Responsable de todos los aspectos del funcionamiento de la cámara y lentes. Prepara y prueba la cámara, trabaja con el operador, puede instalar la cámara si los Grips están ocupados, instala los lentes, mantiene el enfoque durante la toma e instala físicamente el iris. Gestiona pedidos y devoluciones de equipo.</p>
+      </div>
+      <div class="puesto-riesgos">
+        <div class="mini-label">Riesgos identificados</div>
+        <div class="riesgo-row"><strong>01 · Caídas a distinto nivel</strong><br><span class="riesgo-tag">Media</span> Practicables, escaleras</div>
+        <div class="riesgo-row"><strong>02 · Caídas al mismo nivel</strong><br><span class="riesgo-tag">Baja</span> Cables, suelos resbaladizos</div>
+        <div class="riesgo-row"><strong>09 · Golpes con equipos</strong><br><span class="riesgo-tag">Media</span> Dollys, grúas, vehículos de cámara</div>
+        <div class="riesgo-row"><strong>16 · Contacto eléctrico</strong><br><span class="riesgo-tag">Alta</span><span class="riesgo-tag" style="background:rgba(232,0,45,0.25)">Intolerable</span> Cables en mal estado</div>
+        <p style="font-size:0.8rem; margin-top:1rem;">Debe conocer todos los sistemas de soporte de cámara y su operación segura.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ILUMINADOR -->
+  <div class="puesto-panel" id="panel-iluminador">
+    <div class="puesto-layout">
+      <div class="puesto-funciones">
+        <div class="mini-label">Funciones</div>
+        <h3>Técnico en Iluminación</h3>
+        <p>Profesional titulado con amplios conocimientos para el manejo de grandes y sofisticados equipos de iluminación, cámaras profesionales, fotómetros e instrumentos electrónicos. Debe ser altísimamente cualificado desde el punto de vista técnico, y añadir el talento artístico necesario para recrear con luces y sombras la estética adecuada para cada producción.</p>
+      </div>
+      <div class="puesto-riesgos">
+        <div class="mini-label">Riesgos identificados</div>
+        <div class="riesgo-row"><strong>01 · Caídas a distinto nivel</strong><br><span class="riesgo-tag">Alta</span><span class="riesgo-tag" style="background:rgba(232,0,45,0.25)">Intolerable</span> Practicables, escaleras</div>
+        <div class="riesgo-row"><strong>02 · Caídas al mismo nivel</strong><br><span class="riesgo-tag">Media</span> Cables, monitores, suelos resbaladizos</div>
+        <div class="riesgo-row"><strong>03 · Caída de objetos</strong><br><span class="riesgo-tag">Media</span><span class="riesgo-tag" style="background:rgba(232,0,45,0.25)">Intolerable</span> Focos, armazones</div>
+        <div class="riesgo-row"><strong>15 · Contacto térmico</strong><br><span class="riesgo-tag">Alta</span><span class="riesgo-tag" style="background:rgba(232,0,45,0.25)">Intolerable</span> Focos de alta temperatura</div>
+        <div class="riesgo-row"><strong>16 · Contacto eléctrico</strong><br><span class="riesgo-tag">Alta</span><span class="riesgo-tag" style="background:rgba(232,0,45,0.25)">Intolerable</span> Cables y equipos en mal estado</div>
+        <p style="font-size:0.8rem; margin-top:1rem;">Todos los elementos para trabajar en grandes alturas deben estar en perfecto estado. Uso obligatorio de EPIs.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- OPERADOR DE SONIDO -->
+  <div class="puesto-panel" id="panel-sonido">
+    <div class="puesto-layout">
+      <div class="puesto-funciones">
+        <div class="mini-label">Funciones</div>
+        <h3>Operador de Sonido</h3>
+        <p>Profesional que diseña y realiza tomas, registros, reproducción y tratamiento del sonido en todos sus aspectos técnicos y artísticos. Tiene conocimientos de los procesos de producción y realización de programas en relación al sonido. Dirige trabajos de sonido incluyendo el mantenimiento operacional y ajuste de cualquier equipo a su cargo.</p>
+      </div>
+      <div class="puesto-riesgos">
+        <div class="mini-label">Riesgos identificados</div>
+        <div class="riesgo-row"><strong>02 · Caídas al mismo nivel</strong><br><span class="riesgo-tag">Media</span> Cables, monitores, suelos resbaladizos</div>
+        <div class="riesgo-row"><strong>04 · Caída de objetos en manipulación</strong><br><span class="riesgo-tag">Media</span> Grúas, altavoces</div>
+        <div class="riesgo-row"><strong>07 · Choques contra objetos inmóviles</strong><br><span class="riesgo-tag">Media</span> Muros, mobiliario</div>
+        <div class="riesgo-row"><strong>16 · Contacto eléctrico</strong><br><span class="riesgo-tag">Alta</span><span class="riesgo-tag" style="background:rgba(232,0,45,0.25)">Intolerable</span> Cables en mal estado</div>
+        <div class="riesgo-row"><strong>29 · Daños por ruido</strong><br><span class="riesgo-tag">Alta</span><span class="riesgo-tag" style="background:rgba(232,0,45,0.25)">Intolerable</span> Exposición prolongada a niveles elevados</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- REALIZADORA -->
+  <div class="puesto-panel" id="panel-realizadora">
+    <div class="puesto-layout">
+      <div class="puesto-funciones">
+        <div class="mini-label">Funciones</div>
+        <h3>Técnico de Realización</h3>
+        <p>Profesional titulado que decide el tipo de plano, el movimiento de cámara, el tipo de cada una de las cámaras y la cantidad necesaria para realizar el evento. Con todo el equipo dispuesto, decide qué es lo que quiere que salga como programa final.</p>
+      </div>
+      <div class="puesto-riesgos">
+        <div class="mini-label">Riesgos identificados</div>
+        <div class="riesgo-row"><strong>02 · Caídas al mismo nivel</strong><br><span class="riesgo-tag">Baja</span> Mobiliario, suelos resbaladizos</div>
+        <div class="riesgo-row"><strong>05 · Caída de objetos desprendidos</strong><br><span class="riesgo-tag">Baja</span> Estanterías, lámparas</div>
+        <div class="riesgo-row"><strong>07 · Choques contra objetos inmóviles</strong><br><span class="riesgo-tag">Media</span> Muros, paredes, mobiliario</div>
+        <div class="riesgo-row"><strong>27 · Carga mental</strong><br><span class="riesgo-tag">Alta</span><span class="riesgo-tag" style="background:rgba(232,0,45,0.25)">Importante</span> Presión de superiores y ritmos elevados</div>
+        <div class="riesgo-row"><strong>28 · Factores psicosociales</strong><br><span class="riesgo-tag">Alta</span> Presión y ritmos de trabajo elevados</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AYUDANTE DE REALIZACIÓN -->
+  <div class="puesto-panel" id="panel-ayurea">
+    <div class="puesto-layout">
+      <div class="puesto-funciones">
+        <div class="mini-label">Funciones</div>
+        <h3>Ayudante de Realización</h3>
+        <p>Profesional titulado que se encuentra junto al realizador y se encarga de ayudarle a cantar las entradas y salidas de los VTR, los coleos, los tiempos y las frases con las que acaba cada pieza.</p>
+      </div>
+      <div class="puesto-riesgos">
+        <div class="mini-label">Riesgos identificados</div>
+        <div class="riesgo-row"><strong>02 · Caídas al mismo nivel</strong><br><span class="riesgo-tag">Baja</span> Obstáculos de mobiliario, suelos resbaladizos</div>
+        <div class="riesgo-row"><strong>05 · Caída de objetos desprendidos</strong><br><span class="riesgo-tag">Baja</span> Estanterías, lámparas</div>
+        <div class="riesgo-row"><strong>07 · Choques contra objetos inmóviles</strong><br><span class="riesgo-tag">Media</span> Muros, paredes, mobiliario</div>
+        <div class="riesgo-row"><strong>27 · Carga mental</strong><br><span class="riesgo-tag">Alta</span><span class="riesgo-tag" style="background:rgba(232,0,45,0.25)">Importante</span> Recibir y transmitir órdenes correctas bajo presión</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- REGIDOR -->
+  <div class="puesto-panel" id="panel-regidor">
+    <div class="puesto-layout">
+      <div class="puesto-funciones">
+        <div class="mini-label">Funciones</div>
+        <h3>Regidor</h3>
+        <p>Profesional titulado que está en el plató y se encarga de transmitir las órdenes que llegan del realizador. También se ocupa de los actores y presentadores: les da las entradas y salidas, y les guía hasta el final del evento, espectáculo o programa.</p>
+      </div>
+      <div class="puesto-riesgos">
+        <div class="mini-label">Riesgos identificados</div>
+        <div class="riesgo-row"><strong>02 · Caídas al mismo nivel</strong><br><span class="riesgo-tag">Media</span> Mobiliario, suelos resbaladizos</div>
+        <div class="riesgo-row"><strong>03 · Caída de objetos por derrumbe</strong><br><span class="riesgo-tag">Media</span> Decorados, tabiques, focos</div>
+        <div class="riesgo-row"><strong>06 · Pisadas sobre objetos</strong><br><span class="riesgo-tag">Media</span> Cables, suelos mal acondicionados</div>
+        <div class="riesgo-row"><strong>08 · Choques con objetos móviles</strong><br><span class="riesgo-tag">Media</span> Monitores, cámaras, mobiliario</div>
+        <div class="riesgo-row"><strong>11 · Atrapamientos</strong><br><span class="riesgo-tag">Baja</span> Maquinaria en movimiento</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DECORADOR -->
+  <div class="puesto-panel" id="panel-decorador">
+    <div class="puesto-layout">
+      <div class="puesto-funciones">
+        <div class="mini-label">Funciones</div>
+        <h3>Decorador</h3>
+        <p>Coordina la realización de decorados de un espectáculo o producción audiovisual, determinando la utilización de las técnicas adecuadas a las necesidades del medio. En el taller se manipulan herramientas para la confección de los decorados; en el plató solo hay que distribuirlos por el escenario.</p>
+      </div>
+      <div class="puesto-riesgos">
+        <div class="mini-label">Riesgos identificados</div>
+        <div class="riesgo-row"><strong>Riesgo mínimo en plató</strong><br><p style="font-size:0.82rem; margin-bottom:0.5rem;">Los riesgos en el plató son mínimos comparados con el taller. En grandes decorados fijos concebidos en el escenario, es importante el uso de EPIs (guantes, gafas de protección, calzado de seguridad).</p></div>
+        <div class="riesgo-row"><strong>Mayor riesgo en el taller</strong><br><span class="riesgo-tag">Alta</span> Herramientas eléctricas y manuales</div>
+        <div class="riesgo-row"><strong>01 · Caídas a distinto nivel</strong><br><span class="riesgo-tag">Media</span> Uso de escaleras para decorados altos</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRESENTADOR -->
+  <div class="puesto-panel" id="panel-presentador">
+    <div class="puesto-layout">
+      <div class="puesto-funciones">
+        <div class="mini-label">Funciones</div>
+        <h3>Presentador / Actores</h3>
+        <p>Profesional que, a las órdenes del realizador, interpreta o realiza acciones previamente detalladas en la escaleta o guión del programa.</p>
+      </div>
+      <div class="puesto-riesgos">
+        <div class="mini-label">Riesgos identificados</div>
+        <div class="riesgo-row"><strong>02 · Caídas al mismo nivel</strong><br><span class="riesgo-tag">Media</span><span class="riesgo-tag">Tolerable</span> Monitores, suelos resbaladizos</div>
+        <div class="riesgo-row"><strong>05 · Caída de objetos desprendidos</strong><br><span class="riesgo-tag">Baja</span><span class="riesgo-tag">Importante</span> Tabiques, lámparas, estanterías</div>
+        <div class="riesgo-row"><strong>16 · Contacto eléctrico</strong><br><span class="riesgo-tag">Baja</span><span class="riesgo-tag" style="background:rgba(232,0,45,0.25)">Intolerable</span> Micrófonos con corriente</div>
+        <div class="riesgo-row"><strong>22 · Daños por seres vivos</strong><br><span class="riesgo-tag">Medio</span> Lesiones por animales en el programa</div>
+        <div class="riesgo-row"><strong>27 · Iluminación inadecuada</strong><br><span class="riesgo-tag">Medio</span><span class="riesgo-tag">Importante</span> En ocasiones puede ser excesiva o inadecuada</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAQUILLADOR -->
+  <div class="puesto-panel" id="panel-maquillador">
+    <div class="puesto-layout">
+      <div class="puesto-funciones">
+        <div class="mini-label">Funciones</div>
+        <h3>Maquillador / Peluquero</h3>
+        <p>El maquillador da vida a los personajes imaginados por autores, guionistas o realizadores. Mediante productos y materiales especiales (látex, gelatina...) puede elaborar prótesis que coloca él mismo u otros maquilladores. Su trabajo tiene lugar antes de los rodajes y casi siempre en el marco de un taller.</p>
+      </div>
+      <div class="puesto-riesgos">
+        <div class="mini-label">Riesgos identificados</div>
+        <div class="riesgo-row"><strong>Exposición a productos químicos</strong><br><span class="riesgo-tag">Alta</span> Látex, gelatinas, productos cosméticos. El lugar debe estar bien ventilado.</div>
+        <div class="riesgo-row"><strong>Fatiga postural</strong><br><span class="riesgo-tag">Alta</span><span class="riesgo-tag" style="background:rgba(232,0,45,0.25)">Importante</span> Muchas horas de pie con brazos elevados, problemas de espalda.</div>
+        <div class="riesgo-row"><strong>Ruido y luz</strong><br><span class="riesgo-tag">Media</span> Condiciones similares a la peluquería: exposición a ruido y iluminación intensa.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ELECTRICISTA -->
+  <div class="puesto-panel" id="panel-electricista">
+    <div class="puesto-layout">
+      <div class="puesto-funciones">
+        <div class="mini-label">Funciones</div>
+        <h3>Técnico Electricista</h3>
+        <p>Profesional que se ocupa de todos los trabajos relacionados con la electricidad. Están encargados del mantenimiento y reparación de las instalaciones eléctricas. Los electricistas trabajan con herramientas manuales y equipos de verificación y control, y es necesario que cumplan rigurosamente las normas de seguridad.</p>
+      </div>
+      <div class="puesto-riesgos">
+        <div class="mini-label">Riesgos identificados</div>
+        <div class="riesgo-row"><strong>01 · Caídas a distinto nivel</strong><br><span class="riesgo-tag">Media</span><span class="riesgo-tag">Importante</span> Practicables, escaleras</div>
+        <div class="riesgo-row"><strong>02 · Caídas al mismo nivel</strong><br><span class="riesgo-tag">Baja</span><span class="riesgo-tag">Moderado</span> Cables, suelos resbaladizos</div>
+        <div class="riesgo-row"><strong>15 · Contacto térmico</strong><br><span class="riesgo-tag">Alta</span><span class="riesgo-tag" style="background:rgba(232,0,45,0.25)">Intolerable</span> Materiales con temperaturas muy altas</div>
+        <div class="riesgo-row"><strong>16 · Contacto eléctrico</strong><br><span class="riesgo-tag">Alta</span><span class="riesgo-tag" style="background:rgba(232,0,45,0.25)">Intolerable</span> Cables en mal estado</div>
+        <div class="riesgo-row"><strong>09 · Golpes con herramientas</strong><br><span class="riesgo-tag">Baja</span><span class="riesgo-tag">Tolerable</span> Herramientas eléctricas y cables</div>
+        <p style="font-size:0.8rem; margin-top:1rem;">Al igual que el técnico de iluminación, todos los elementos para operar en grandes alturas deben estar en perfecto estado y los materiales eléctricos han de ser comprobados antes de su uso.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="full-divider"></div>
+
+<!-- CONCLUSIÓN -->
+<section id="conclusion">
+  <div class="section-label fade-in">Valoración personal</div>
+  <h2 class="fade-in">Conclusiones</h2>
+
+  <div class="conclu-grid">
+    <div class="conclu-card fade-in">
+      <div class="conclu-name">David</div>
+      <p>Me ha parecido un trabajo tanto educativo, al poder interpretar las señales del entorno de trabajo, como práctico, ya que puede facilitar y acelerar la actividad laboral en un entorno más cómodo y seguro. También me ha permitido conocer más características de los puestos de trabajo y cómo deben realizarse correctamente.</p>
+    </div>
+    <div class="conclu-card fade-in">
+      <div class="conclu-name">María</div>
+      <p>Me ha parecido un trabajo bastante interesante, ya que en un futuro no muy lejano ocuparé alguno de los puestos mencionados y sabré de antemano cuáles son los riesgos que puedo correr y cómo solucionarlos. También me ha enseñado a reconocer el tipo de señales con las que me encuentro a diario y en las que no me fijaba antes.</p>
+    </div>
+    <div class="conclu-card fade-in">
+      <div class="conclu-name">Mariano</div>
+      <p>El trabajo ha sido muy útil para comprender cómo se aplica la normativa de prevención de riesgos laborales en un entorno real como el de un plató de televisión. Ver los riesgos de los puestos que en un futuro podríamos desempeñar nos da una visión muy completa de lo que nos espera en el mundo profesional.</p>
+    </div>
+    <div class="conclu-card fade-in">
+      <div class="conclu-name">Pauliño</div>
+      <p>Ha sido enriquecedor analizar en detalle las señales y la normativa que rodea nuestro entorno cotidiano en el CES. El trabajo nos ha dado herramientas para identificar riesgos en cualquier entorno laboral audiovisual y actuar de manera preventiva, algo que será muy valioso en nuestra vida profesional.</p>
+    </div>
+    <div class="conclu-card fade-in" style="border-color: rgba(232,0,45,0.2);">
+      <div class="conclu-name" style="color:#ff8898;">Abel</div>
+      <p>La realización de este trabajo me ha permitido conocer en profundidad la normativa de seguridad aplicada a un entorno que conozco bien. Me ha sorprendido la cantidad de riesgos que existen en un plató y que habitualmente pasamos por alto. Aplicar el Real Decreto al espacio físico que usamos cada día le da un valor práctico muy especial a este trabajo.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">FOL · CES</div>
+  <p>Riesgos Laborales en Platós de Televisión</p>
+  <p style="margin-top:0.5rem;">Web diseñada por Abel Rubio Hidalgo · Trabajo para FOL realizado por</p>
+  <p>David García, María Gómez, Mariano, Pauliño y Abel Rubio · CES 2008</p>
+  <p style="margin-top:1.5rem; font-size:0.72rem; opacity:0.4;">Aplicación del Real Decreto 486/1997 y Real Decreto 485/1997</p>
+</footer>
+
+<script>
+  // ── TABS ──
+  function showTab(id) {
+    document.querySelectorAll('.puesto-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('panel-' + id).classList.add('active');
+    event.target.classList.add('active');
+  }
+
+  // ── SCROLL FADE IN ──
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // ── NAV ACTIVE ──
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+
+  const navObserver = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        const link = document.querySelector(`.nav-links a[href="#${e.target.id}"]`);
+        if (link) link.classList.add('active');
+      }
+    });
+  }, { threshold: 0.4 });
+
+  sections.forEach(s => navObserver.observe(s));
+</script>
+</body>
+</html>
