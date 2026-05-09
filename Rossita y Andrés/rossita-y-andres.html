@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rossita y Andrés - Abel Rubio Hidalgo</title>
+    <link rel="icon" type="ico" href="favicon.ico">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #b967ff 0%, #5b7ce6 50%, #87ceeb 100%);
+        }
+
+        .book-wrapper {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .pages-container {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page {
+            display: none;
+            position: absolute;
+            inset: 0;
+            background: #fff;
+        }
+
+        .page.active {
+            display: flex;
+            flex-direction: column;
+            animation: fadeIn 0.35s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to   { opacity: 1; }
+        }
+
+        /* ── PORTADA ─────────────────────────────────────────── */
+        .page-cover {
+            background: linear-gradient(180deg, #c264fe 0%, #7b5fe6 45%, #63aee8 100%);
+            justify-content: space-between;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding: 0 20px;
+        }
+
+        /* Espaciador superior para empujar el contenido al centro */
+        .cover-spacer { flex: 1; }
+
+        .cover-inner {
+            flex: 0 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .page-cover h1 {
+            font-size: clamp(2.4rem, 7vw, 5rem);
+            text-shadow: 3px 3px 12px rgba(0,0,0,0.4);
+            letter-spacing: 0.01em;
+        }
+
+        .page-cover .author {
+            font-size: clamp(1rem, 2.5vw, 1.7rem);
+            font-style: italic;
+            opacity: 0.88;
+            border-top: 1px solid rgba(255,255,255,0.5);
+            padding-top: 12px;
+            width: 60%;
+            text-align: center;
+        }
+
+        /* Pie de portada — al fondo con flex */
+        .cover-footer {
+            flex: 0 0 auto;
+            padding-bottom: 20px;
+            color: rgba(255,255,255,0.65);
+            font-size: 0.75rem;
+            letter-spacing: 0.08em;
+            white-space: nowrap;
+            align-self: center;
+        }
+
+        /* ── PÁGINAS DE CONTENIDO ────────────────────────────── */
+        /* El área de contenido llena toda la página */
+        .page-body {
+            flex: 1;
+            overflow: hidden;
+            padding: clamp(14px, 2.5vw, 40px) clamp(16px, 3vw, 50px);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* Texto que fluye alrededor de la imagen */
+        .page-body .story-text {
+            font-size: clamp(0.88rem, 1.25vw, 1.1rem);
+            line-height: 1.85;
+            color: #2a2a2a;
+            text-align: justify;
+            overflow: hidden;
+            max-height: 100%;
+        }
+
+        .page-body .story-text p {
+            margin-bottom: 0.75em;
+        }
+
+        .page-body .story-text p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Imagen flotante — igual que en el PDF */
+        .float-right {
+            float: right;
+            margin: 0 0 12px 24px;
+            max-height: 78vh;
+            width: auto;
+            max-width: 50%;
+            object-fit: contain;
+            border-radius: 4px;
+        }
+
+        .float-left {
+            float: left;
+            margin: 0 24px 12px 0;
+            max-height: 78vh;
+            width: auto;
+            max-width: 50%;
+            object-fit: contain;
+            border-radius: 4px;
+        }
+
+        /* Imagen centrada abajo (cuando la imagen va debajo del texto) */
+        .img-bottom {
+            display: block;
+            margin: 16px auto 0;
+            max-height: 45vh;
+            max-width: 70%;
+            object-fit: contain;
+            border-radius: 4px;
+        }
+
+        /* Número de página */
+        .page-num {
+            position: absolute;
+            bottom: 8px;
+            right: 14px;
+            font-size: 0.78rem;
+            color: #e07000;
+            font-weight: bold;
+        }
+
+        /* Cabecera de página (como en el PDF: "Rossita y Andrés / Abel Rubio") */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px clamp(16px, 3vw, 50px);
+            border-bottom: 1px solid #eee;
+            font-size: 0.72rem;
+            color: #aaa;
+            flex-shrink: 0;
+        }
+
+        .page-header .title-left { font-weight: bold; }
+        .page-header .title-left .rossita { color: #e0407a; }
+        .page-header .title-left .y      { color: #aaa; font-weight: normal; }
+        .page-header .title-left .andres  { color: #3aaa5a; }
+
+        /* ── BARRA DE NAVEGACIÓN ─────────────────────────────── */
+        .navigation {
+            flex: 0 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 9px 22px;
+            background: rgba(255,255,255,0.93);
+            border-top: 1px solid #ddd;
+            backdrop-filter: blur(4px);
+            gap: 10px;
+        }
+
+        .nav-button {
+            padding: 8px 24px;
+            background: #7b5fe6;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.92rem;
+            transition: background 0.2s, transform 0.2s;
+            box-shadow: 0 3px 10px rgba(123,95,230,0.35);
+            white-space: nowrap;
+        }
+
+        .nav-button:hover:not(:disabled) {
+            background: #5f3fbf;
+            transform: translateY(-2px);
+        }
+
+        .nav-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .page-indicator {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+
+        #pageCounter {
+            font-size: 0.82rem;
+            color: #555;
+            font-weight: bold;
+        }
+
+        .progress-dots {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+            justify-content: center;
+            max-width: 300px;
+        }
+
+        .dot {
+            width: 7px; height: 7px;
+            border-radius: 50%;
+            background: #ddd;
+            transition: all 0.25s;
+            cursor: pointer;
+        }
+
+        .dot.active { background: #7b5fe6; transform: scale(1.45); }
+        .dot:hover  { background: #aaa; }
+
+        /* ── RESPONSIVE ──────────────────────────────────────── */
+        @media (max-width: 600px) {
+            .float-right, .float-left {
+                float: none;
+                display: block;
+                margin: 0 auto 10px;
+                max-width: 80%;
+                max-height: 35vh;
+            }
+
+            .nav-button { padding: 7px 14px; font-size: 0.8rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="book-wrapper">
+
+    <div class="pages-container">
+
+        <!-- ══ PORTADA ══ -->
+        <div class="page active page-cover" data-page="0">
+            <div class="cover-spacer"></div>
+            <div class="cover-inner">
+                <h1>Rossita y Andrés</h1>
+                <div class="author">Abel Rubio Hidalgo</div>
+            </div>
+            <div class="cover-spacer"></div>
+            <div class="cover-footer">Actualizado por Claude</div>
+        </div>
+
+        <!-- ══ PÁGINA 1 ══ -->
+        <div class="page" data-page="1">
+            <div class="page-header">
+                <span class="title-left"><span class="rossita">Rossita</span> <span class="y">y</span> <span class="andres">Andrés</span></span>
+                <span>Abel Rubio</span>
+            </div>
+            <div class="page-body">
+                <div class="story-text">
+                    <img class="float-right" src="1.png" alt="Rossita y Andrés en la mesa">
+                    <p>Rossita era una niña de seis años muy especial. Era delgada y alta, rubia y con los ojos marrones. Tenía un hermano al que le habían diagnosticado que era celíaco al poco tiempo de nacer.</p>
+                    <p>Andrés, el hermano de Rossita, tenía tres años y ya comía prácticamente de todo, todo menos las cosas que tenían gluten.</p>
+                </div>
+                <div class="page-num">1</div>
+            </div>
+        </div>
+
+        <!-- ══ PÁGINA 2 ══ -->
+        <div class="page" data-page="2">
+            <div class="page-header">
+                <span class="title-left"><span class="rossita">Rossita</span> <span class="y">y</span> <span class="andres">Andrés</span></span>
+                <span>Abel Rubio</span>
+            </div>
+            <div class="page-body">
+                <div class="story-text">
+                    <img class="float-right" src="2.png" alt="Rossita preguntando sobre el gluten">
+                    <p>Al principio Rossita le preguntaba mucho a su mamá que en dónde se encontraba el gluten.</p>
+                    <p>Su madre le decía que el gluten no estaba en los alimentos naturales (como carnes, pescados, leche, frutas, verduras) siempre y cuando no estuviesen procesados o elaborados, ya que pueden contener gluten. Pero en todos los demás lo llevaba, o los podía llevar.</p>
+                    <p>—¿Gluten? ¿Pero eso qué es?</p>
+                </div>
+                <div class="page-num">2</div>
+            </div>
+        </div>
+
+        <!-- ══ PÁGINA 3 ══ -->
+        <div class="page" data-page="3">
+            <div class="page-header">
+                <span class="title-left"><span class="rossita">Rossita</span> <span class="y">y</span> <span class="andres">Andrés</span></span>
+                <span>Abel Rubio</span>
+            </div>
+            <div class="page-body">
+                <div class="story-text">
+                    <img class="float-left" src="3.png" alt="Galleta en leche">
+                    <p>—El gluten es una proteína que se encuentra en los cereales como el trigo, la avena, el centeno, la malta…</p>
+                    <p>—¿Y en esto mamá? —Le dijo levantando una galleta que estaba mojando en su vaso de leche.</p>
+                    <p>—Sí hija, esa galleta es de trigo. Andrés tiene galletas pero son de maíz, que junto con el arroz es uno de los cereales que no tiene gluten.</p>
+                    <p>Su madre se levantó de la mesa donde estaba ya casi todo preparado para desayunar, fue a un armario y sacó las galletas sin gluten para Andrés.</p>
+                </div>
+                <div class="page-num">3</div>
+            </div>
+        </div>
+
+        <!-- ══ PÁGINA 4 ══ -->
+        <div class="page" data-page="4">
+            <div class="page-header">
+                <span class="title-left"><span class="rossita">Rossita</span> <span class="y">y</span> <span class="andres">Andrés</span></span>
+                <span>Abel Rubio</span>
+            </div>
+            <div class="page-body">
+                <div class="story-text">
+                    <p>—¿Y la mermelada puede comerla? —Dijo mientras untaba mermelada de fresa en la galleta.</p>
+                    <p>—Sí, es uno de los alimentos genéricos.</p>
+                    <p>—Andrés, ¿quieres un poco? —Le dijo a su hermano que estaba sentado enfrente suyo.</p>
+                    <p>Andrés afirmó con la cabeza y su hermana cogió una de las galletas sin gluten que su madre había dejado en la mesa.</p>
+                    <img class="img-bottom" src="4.png" alt="Mesa del desayuno con galletas y mermelada">
+                </div>
+                <div class="page-num">4</div>
+            </div>
+        </div>
+
+        <!-- ══ PÁGINA 5 ══ -->
+        <div class="page" data-page="5">
+            <div class="page-header">
+                <span class="title-left"><span class="rossita">Rossita</span> <span class="y">y</span> <span class="andres">Andrés</span></span>
+                <span>Abel Rubio</span>
+            </div>
+            <div class="page-body">
+                <div class="story-text">
+                    <p>—No, así no lo hagas —dijo la mamá de Rossita al ver cómo untaba la galleta sin gluten de mermelada.</p>
+                    <p>—Si es una galleta de las que Andrés puede comer y la mermelada es sin gluten —dijo la niña un poco desconcertada.</p>
+                    <p>—Ya, pero estás usando nuestra mermelada y un cuchillo que se contaminó al untarlo con nuestras galletas.</p>
+                    <p>Rossita se quedó inmovilizada y no supo cómo actuar.</p>
+                    <img class="img-bottom" src="5.png" alt="Contaminación cruzada">
+                </div>
+                <div class="page-num">5</div>
+            </div>
+        </div>
+
+        <!-- ══ PÁGINA 6 ══ -->
+        <div class="page" data-page="6">
+            <div class="page-header">
+                <span class="title-left"><span class="rossita">Rossita</span> <span class="y">y</span> <span class="andres">Andrés</span></span>
+                <span>Abel Rubio</span>
+            </div>
+            <div class="page-body">
+                <div class="story-text">
+                    <img class="float-right" src="6.png" alt="La cara de Rossita preocupada">
+                    <p>—No te preocupes —dijo al ver la cara de preocupación de su hija.</p>
+                    <p>La mamá de Rossita fue a la nevera, cogió un tarro de mermelada que tenía una pegatina con el nombre de su hijo, cogió un cuchillo limpio, se sentó y comenzó a untar la mermelada en la galleta sin gluten.</p>
+                    <p>—Cómete esa tú, Rossita.</p>
+                    <p>—Pero, ¡es sin gluten!</p>
+                    <p>—Ya, pero tú también comes cosas sin gluten, la leche por ejemplo.</p>
+                    <p>—Sabe un poco diferente —dijo después de dar un mordisco a la galleta—. Con leche sabe mucho mejor —dijo tras mojar la galleta en el vaso y comérsela entera.</p>
+                </div>
+                <div class="page-num">6</div>
+            </div>
+        </div>
+
+        <!-- ══ PÁGINA 7 ══ -->
+        <div class="page" data-page="7">
+            <div class="page-header">
+                <span class="title-left"><span class="rossita">Rossita</span> <span class="y">y</span> <span class="andres">Andrés</span></span>
+                <span>Abel Rubio</span>
+            </div>
+            <div class="page-body">
+                <div class="story-text">
+                    <p>Gracias a su hermano, Rossita, que ya iba haciéndose mayor, aprendió muchas cosas sobre la enfermedad celíaca. Entre esas cosas, que es una enfermedad crónica y que durante toda la vida su hermano tenía que seguir una dieta estricta, ya que si comía gluten se ponía muy malo, hasta el punto de estar ingresado en el hospital muchos días, como ya le había pasado en varias ocasiones.</p>
+                    <p>Por eso Rossita tenía mucho cuidado a la hora de hacer la comida. Primero siempre cocinaba los alimentos sin gluten para evitar una posible contaminación cruzada. Cuando cocinaba cosas a la vez, siempre lo hacía en cazos separados y utilizando cucharas distintas para remover.</p>
+                    <img class="img-bottom" src="7.png" alt="Rossita cocinando con cuidado">
+                </div>
+                <div class="page-num">7</div>
+            </div>
+        </div>
+
+        <!-- ══ PÁGINA 8 ══ -->
+        <div class="page" data-page="8">
+            <div class="page-header">
+                <span class="title-left"><span class="rossita">Rossita</span> <span class="y">y</span> <span class="andres">Andrés</span></span>
+                <span>Abel Rubio</span>
+            </div>
+            <div class="page-body">
+                <div class="story-text">
+                    <img class="float-right" src="8.png" alt="Rossita sin crecer">
+                    <p>El tiempo fue pasando… meses, años y Rossita no crecía ni engordaba. Se había quedado en la misma altura desde los siete años y ya tenía casi diez.</p>
+                    <p>Ella se encontraba bien, pero sus padres estaban preocupados al ver cómo su hijo Andrés crecía fuerte y sano, mientras que Rossita, que había sido una niña muy feliz un tiempo atrás, ahora estaba desganada y no le apetecía comer, jugar ni cantar.</p>
+                </div>
+                <div class="page-num">8</div>
+            </div>
+        </div>
+
+        <!-- ══ PÁGINA 9 ══ -->
+        <div class="page" data-page="9">
+            <div class="page-header">
+                <span class="title-left"><span class="rossita">Rossita</span> <span class="y">y</span> <span class="andres">Andrés</span></span>
+                <span>Abel Rubio</span>
+            </div>
+            <div class="page-body">
+                <div class="story-text">
+                    <img class="float-right" src="9.png" alt="Rossita en el médico">
+                    <p>Un jueves los padres de Rossita decidieron llevarla al médico, y como el doctor sabía que su hermano era celíaco decidió hacerle unas pruebas; primero en sangre, que dieron positivas, y después le hicieron una gastroscopia.</p>
+                    <p>Fue todo muy rápido y a los pocos meses ya estaban otra vez en la consulta del doctor.</p>
+                </div>
+                <div class="page-num">9</div>
+            </div>
+        </div>
+
+        <!-- ══ PÁGINA 10 ══ -->
+        <div class="page" data-page="10">
+            <div class="page-header">
+                <span class="title-left"><span class="rossita">Rossita</span> <span class="y">y</span> <span class="andres">Andrés</span></span>
+                <span>Abel Rubio</span>
+            </div>
+            <div class="page-body">
+                <div class="story-text">
+                    <img class="float-left" src="10.png" alt="El doctor">
+                    <p>—¿Qué tal Rossita? —Dijo el médico con una sonrisa dibujada en su cara—. ¿Has tenido dolores abdominales, en la tripa, o en alguna parte de tu cuerpo? —Le dijo tocando su barriga.</p>
+                    <p>—No —Le respondió la niña.</p>
+                    <p>—No se queja de que le duela nada —continuó la madre—, sólo que sigue muy desganada sin ganas de comer y sigue sin crecer.</p>
+                </div>
+                <div class="page-num">10</div>
+            </div>
+        </div>
+
+        <!-- ══ PÁGINA 11 ══ -->
+        <div class="page" data-page="11">
+            <div class="page-header">
+                <span class="title-left"><span class="rossita">Rossita</span> <span class="y">y</span> <span class="andres">Andrés</span></span>
+                <span>Abel Rubio</span>
+            </div>
+            <div class="page-body">
+                <div class="story-text">
+                    <p>—Ya —afirmó el doctor volviendo a su mesa—. Bueno Rossita, tú vas a tener que tener mucho más cuidado que Andrés a partir de ahora.</p>
+                    <p>La niña miró a sus padres desconcertada.</p>
+                    <p>—Eres celíaca como tu hermano. Pero a diferencia de Andrés, que si come algo se pone malo en seguida y se da cuenta, tú Rossita eres celíaca <em>asintomática</em>.</p>
+                    <p>Si coméis algo con gluten ambos os pondréis malos, aunque tú no lo notes externamente. Dentro de tu intestino hay unas vellosidades que son las que se encargan de absorber los nutrientes de los alimentos. Cuando comes gluten se van cortando y atrofiando y a la larga tendrías problemas graves de salud…</p>
+                    <img class="img-bottom" src="11.png" alt="Vellosidades intestinales atrofiadas">
+                </div>
+                <div class="page-num">11</div>
+            </div>
+        </div>
+
+        <!-- ══ PÁGINA 12 ══ -->
+        <div class="page" data-page="12">
+            <div class="page-header">
+                <span class="title-left"><span class="rossita">Rossita</span> <span class="y">y</span> <span class="andres">Andrés</span></span>
+                <span>Abel Rubio</span>
+            </div>
+            <div class="page-body">
+                <div class="story-text">
+                    <p>Al principio los padres de Rossita escuchaban atentamente hablar al doctor, y cuando acabó comenzaron a hacerle miles de preguntas. Lo bueno era que, como ya tenían la experiencia de Andrés, estaban, por una parte, aliviados de saber que a su hija lo que le pasaba era eso y no otras cosas peores.</p>
+                    <p>Rossita comenzó su dieta estricta sin gluten y aunque en unos pocos meses volvió a sentirse como antes, con más energía y con ganas de jugar y volver a cantar, no fue hasta dos años después cuando recuperó por completo el estado anterior de sus vellosidades atrofiadas por el gluten.</p>
+                    <img class="img-bottom" src="12.png" alt="Vellosidades intestinales recuperadas">
+                </div>
+                <div class="page-num">12</div>
+            </div>
+        </div>
+
+        <!-- ══ PÁGINA 13 ══ -->
+        <div class="page" data-page="13">
+            <div class="page-header">
+                <span class="title-left"><span class="rossita">Rossita</span> <span class="y">y</span> <span class="andres">Andrés</span></span>
+                <span>Abel Rubio</span>
+            </div>
+            <div class="page-body">
+                <div class="story-text">
+                    <img class="float-right" src="16.png" alt="Rossita feliz y saludable">
+                    <p>Rossita va a quinto de primaria y cuando sus amigas se encuentran mal y tienen problemas de salud, les anima a que se hagan las pruebas en sangre.</p>
+                    <p>La enfermedad celíaca puede ser muy mala si no se detecta a tiempo, pero es un gran alivio si se diagnostica pronto, ya que haciendo una dieta estricta, volverás a ser el de antes, incluso mejor.</p>
+                </div>
+                <div class="page-num">13</div>
+            </div>
+        </div>
+
+        <!-- ══ PÁGINA 14 ══ -->
+        <div class="page" data-page="14">
+            <div class="page-header">
+                <span class="title-left"><span class="rossita">Rossita</span> <span class="y">y</span> <span class="andres">Andrés</span></span>
+                <span>Abel Rubio</span>
+            </div>
+            <div class="page-body">
+                <div class="story-text">
+                    <img class="float-left" src="15.png" alt="Andrés despidiéndose">
+                    <p>Por cierto, ¡qué maleducado soy, no me presenté!</p>
+                    <p>Soy Andrés, el hermano de Rossita, y no quiero terminar este cuento sin darle las gracias a mi hermana y a mis padres, que siempre están ahí cuando me encuentro mal y me ayudan a poder levantarme.</p>
+                    <p>Y muchas gracias a todos por leer y oír nuestra historia.</p>
+                    <p><strong>¡GRACIAS!</strong></p>
+                </div>
+                <div class="page-num">14</div>
+            </div>
+        </div>
+
+    </div><!-- /pages-container -->
+
+    <!-- ══ BARRA DE NAVEGACIÓN ══ -->
+    <div class="navigation">
+        <button class="nav-button" id="prevBtn" onclick="changePage(-1)">← Anterior</button>
+        <div class="page-indicator">
+            <span id="pageCounter"></span>
+            <div class="progress-dots" id="progressDots"></div>
+        </div>
+        <button class="nav-button" id="nextBtn" onclick="changePage(1)">Siguiente →</button>
+    </div>
+
+</div><!-- /book-wrapper -->
+
+<script>
+    let currentPage = 0;
+    const totalPages = 15;
+
+    function createProgressDots() {
+        const c = document.getElementById('progressDots');
+        for (let i = 0; i < totalPages; i++) {
+            const d = document.createElement('div');
+            d.className = 'dot' + (i === 0 ? ' active' : '');
+            d.id = 'dot-' + i;
+            d.title = i === 0 ? 'Portada' : 'Página ' + i;
+            d.onclick = () => goToPage(i);
+            c.appendChild(d);
+        }
+    }
+
+    function updateProgressDots() {
+        for (let i = 0; i < totalPages; i++) {
+            document.getElementById('dot-' + i).classList.toggle('active', i === currentPage);
+        }
+    }
+
+    function goToPage(n) {
+        if (n < 0 || n >= totalPages) return;
+        const pages = document.querySelectorAll('.page');
+        pages[currentPage].classList.remove('active');
+        currentPage = n;
+        pages[currentPage].classList.add('active');
+        updateNavigation();
+        updateProgressDots();
+    }
+
+    function changePage(dir) { goToPage(currentPage + dir); }
+
+    function updateNavigation() {
+        document.getElementById('prevBtn').disabled = currentPage === 0;
+        document.getElementById('nextBtn').disabled = currentPage === totalPages - 1;
+        document.getElementById('pageCounter').textContent =
+            currentPage === 0
+                ? 'Portada · 14 páginas'
+                : 'Página ' + currentPage + ' de ' + (totalPages - 1);
+    }
+
+    document.addEventListener('keydown', e => {
+        if (e.key === 'ArrowLeft')  changePage(-1);
+        if (e.key === 'ArrowRight') changePage(1);
+    });
+
+    let touchStartX = 0;
+    document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+    document.addEventListener('touchend', e => {
+        const dx = e.changedTouches[0].clientX - touchStartX;
+        if (Math.abs(dx) > 50) changePage(dx < 0 ? 1 : -1);
+    }, { passive: true });
+
+    window.onload = () => { createProgressDots(); updateNavigation(); };
+</script>
+</body>
+</html>
